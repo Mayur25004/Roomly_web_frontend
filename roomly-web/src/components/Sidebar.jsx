@@ -21,7 +21,7 @@ function Sidebar() {
   }
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 flex w-62.5 flex-col bg-[#17152b] px-4.5 pt-7 pb-5 text-[#f8fafc] max-sm:w-19 max-sm:px-2.5">
+    <aside className="fixed inset-y-0 left-0 z-10 flex w-[250px] flex-col bg-[#17152b] px-[18px] pt-7 pb-5 text-[#f8fafc] max-sm:w-[76px] max-sm:px-2.5">
       <div className="flex items-center gap-2.75 px-2.5 text-2xl font-[750] text-[#c6bbff] max-sm:justify-center max-sm:px-0">
         <CalendarDays size={26} />
         <span className="max-sm:hidden">Roomly</span>

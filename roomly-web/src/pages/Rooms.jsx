@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Search, Users, MapPin, DoorOpen } from "lucide-react";
-
+import { Search } from "lucide-react";
+import { DoorOpen } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { Users } from "lucide-react";
 import RoomCard from "../components/RoomCard.jsx";
 
 const rooms = [
@@ -105,17 +107,18 @@ const filteredRooms = rooms.filter((room) =>
             </button>
           </article>
         ))}
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
             {filteredRooms.map((room) => (
                 <RoomCard key={room.id} room={room} />
             ))}
         </div>
-      </div>
-      {filteredRooms.length === 0 && (
+        {filteredRooms.length === 0 && (
         <p className="text-sm text-slate-500">
             No rooms found. Try another search.
         </p>
 )}
+      </div>
+      
     </section>
   );
 }
