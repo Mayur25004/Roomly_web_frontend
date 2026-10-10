@@ -52,13 +52,6 @@ ol {
   list-style: none;
 }
 
-/* Main content beside the fixed sidebar */
-.main-content {
-  min-height: 100vh;
-  margin-left: 250px;
-  padding: 32px;
-  background: #f8fafc;
-}
 
 @media (max-width: 640px) {
   .main-content {

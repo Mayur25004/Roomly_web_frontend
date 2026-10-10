@@ -7,9 +7,11 @@ function MainLayout() {
     <div className="min-h-screen bg-slate-50">
       <Sidebar />
 
-      <main className="ml-[250px] min-h-screen p-8 max-sm:ml-[76px] max-sm:p-5">
-        <Outlet />
-      </main>
+      <div className="ml-[250px] min-h-screen min-w-0 max-sm:ml-[76px]">
+        <main className="w-full min-w-0 p-8 max-sm:p-4">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,7 @@
-
+import { useState } from "react";
 import { Search, Users, MapPin, DoorOpen } from "lucide-react";
+
+import RoomCard from "../components/RoomCard.jsx";
 
 const rooms = [
   {
@@ -25,7 +27,14 @@ const rooms = [
   },
 ];
 
+
 function Rooms() {
+const [search, setSearch] = useState("");
+const filteredRooms = rooms.filter((room) =>
+  `${room.name} ${room.location}`
+    .toLowerCase()
+    .includes(search.toLowerCase())
+);
   return (
     <section className="space-y-8">
       <header>
@@ -40,17 +49,20 @@ function Rooms() {
       <div className="flex max-w-lg items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
         <Search size={19} className="text-slate-400" />
         <input
-          type="text"
-          placeholder="Search meeting rooms..."
-          className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
-        />
+            type="text"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search meeting rooms..."
+            className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
+            />
       </div>
-
+      
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {rooms.map((room) => (
+        {filteredRooms.map((room) => (  
+            
           <article
             key={room.id}
-            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+            className="min-w-0 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
           >
             <div className="mb-6 flex items-center justify-between">
               <div className="flex size-12 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
@@ -93,7 +105,17 @@ function Rooms() {
             </button>
           </article>
         ))}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {filteredRooms.map((room) => (
+                <RoomCard key={room.id} room={room} />
+            ))}
+        </div>
       </div>
+      {filteredRooms.length === 0 && (
+        <p className="text-sm text-slate-500">
+            No rooms found. Try another search.
+        </p>
+)}
     </section>
   );
 }
