@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getApiErrorMessage } from "./apiErrors.ts";
+import { getApiErrorMessage } from "./apiErrors.js";
 
 test("uses a server validation message and includes the request ID", () => {
   assert.equal(

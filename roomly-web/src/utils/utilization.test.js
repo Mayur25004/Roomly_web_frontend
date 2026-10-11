@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { calculateUtilizationRows } from "./utilization.ts";
-import { getLocalDateString } from "./dateTime.ts";
+import { calculateUtilizationRows } from "./utilization.js";
+import { getLocalDateString } from "./dateTime.js";
 
 function localIso(year, month, day, hour, minute = 0) {
   const date = new Date(year, month - 1, day, hour, minute);

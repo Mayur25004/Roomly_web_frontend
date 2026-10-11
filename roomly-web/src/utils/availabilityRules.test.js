@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { findAvailableRooms } from "./availabilityRules.ts";
+import { findAvailableRooms } from "./availabilityRules.js";
 
 const rooms = [
   { id: 1, name: "Room A", capacity: 8, active: true, amenities: ["Display", "Whiteboard"] },

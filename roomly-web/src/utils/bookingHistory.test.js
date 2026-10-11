@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getBookingsForView } from "./bookingHistory.ts";
+import { getBookingsForView } from "./bookingHistory.js";
 
 const bookings = [
   { id: "upcoming", startTime: "2026-05-03T10:00:00.000Z", status: "active" },

@@ -83,7 +83,7 @@ Confirm the actual route, query names, response envelope, and whether cancelled 
 - Logout: `POST` to `VITE_LOGOUT_PATH`.
 - Each successful auth response is proposed to contain `{ user: { id, name, email, role } }`, where `role` is `employee` or `admin`. Admin creation remains backend-controlled.
 
-The API service currently sends requests with credentials enabled and keeps only the returned user summary in `sessionStorage`; it does not store a password or bearer token. Confirm cookie/session behavior, CORS credentials, endpoint paths, response shape, expired-session status (the frontend currently treats HTTP 401 as an expired session), and registration validation before using the real service. Development mock accounts live in `src/data/mockUsers.ts` and must be removed before final submission.
+The API service currently sends requests with credentials enabled and keeps only the returned user summary in `sessionStorage`; it does not store a password or bearer token. Confirm cookie/session behavior, CORS credentials, endpoint paths, response shape, expired-session status (the frontend currently treats HTTP 401 as an expired session), and registration validation before using the real service. Development mock accounts live in `src/data/mockUsers.js` and must be removed before final submission.
 
 
 ## Admin API draft

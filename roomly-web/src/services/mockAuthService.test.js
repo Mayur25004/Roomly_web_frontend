@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { loginWithMock, registerWithMock } from "./mockAuthService.ts";
+import { loginWithMock, registerWithMock } from "./mockAuthService.js";
 
 test("mock login returns a safe user summary without a password", async () => {
   const user = await loginWithMock("employee@roomly.local", "Roomly123!");
