@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   validateBookingInput,
   validateTimeWindow,
-} from "./bookingValidation.js";
+} from "./bookingValidation.ts";
 
 const now = new Date(2026, 0, 1, 8, 0);
 const validBooking = {

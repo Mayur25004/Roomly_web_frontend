@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, CalendarDays, Clock3, Users } from "lucide-react";
 import { roomsService } from "../services/roomsService.js";
 import { roomPlanningService } from "../services/roomPlanningService.js";
-import { formatDate, formatTime, getLocalDateString } from "../utils/dateTime.js";
+import { formatDate, formatTime, getLocalDateString } from "../utils/dateTime.ts";
 
 function RoomSchedule() {
   const { roomId } = useParams();

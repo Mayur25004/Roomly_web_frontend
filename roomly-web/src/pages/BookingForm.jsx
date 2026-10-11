@@ -3,8 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, MapPin, Users } from "lucide-react";
 import { mockRooms } from "../data/mockRooms.js";
 import { myBookingsService } from "../services/myBookingsService.js";
-import { combineLocalDateAndTime } from "../utils/dateTime.js";
-import { validateBookingInput } from "../utils/bookingValidation.js";
+import { combineLocalDateAndTime } from "../utils/dateTime.ts";
+import { validateBookingInput } from "../utils/bookingValidation.ts";
 
 function BookingForm() {
   const { roomId } = useParams();

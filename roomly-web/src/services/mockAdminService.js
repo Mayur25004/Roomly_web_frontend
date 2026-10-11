@@ -1,7 +1,7 @@
 import { mockAmenities } from "../data/mockAmenities.js";
 import { mockRooms } from "../data/mockRooms.js";
 import { getMockMyBookings } from "./mockMyBookingsService.js";
-import { calculateUtilizationRows } from "../utils/utilization.js";
+import { calculateUtilizationRows } from "../utils/utilization.ts";
 
 function copyRoom(room) {
   return { ...room, amenities: [...room.amenities] };

@@ -5,8 +5,8 @@ import { roomPlanningService } from "../services/roomPlanningService.js";
 import {
   combineLocalDateAndTime,
   getLocalDateString,
-} from "../utils/dateTime.js";
-import { validateTimeWindow } from "../utils/bookingValidation.js";
+} from "../utils/dateTime.ts";
+import { validateTimeWindow } from "../utils/bookingValidation.ts";
 
 function Availability() {
   const [meetingDate, setMeetingDate] = useState(getLocalDateString());

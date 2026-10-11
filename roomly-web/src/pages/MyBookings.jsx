@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CalendarDays, Clock3, MapPin, Users } from "lucide-react";
-import { ApiError } from "../api/apiClient.js";
+import { ApiError } from "../api/apiClient.ts";
 import { myBookingsService } from "../services/myBookingsService.js";
-import { formatDate, formatTime } from "../utils/dateTime.js";
+import { formatDate, formatTime } from "../utils/dateTime.ts";
 
 function getErrorMessage(error) {
   if (error instanceof ApiError || error instanceof Error) {

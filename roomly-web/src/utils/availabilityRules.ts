@@ -1,9 +1,15 @@
-export function findAvailableRooms(rooms, bookings, criteria) {
+import type { AvailabilityCriteria, Booking, Room } from "../types/models.ts";
+
+export function findAvailableRooms(
+  rooms: Room[],
+  bookings: Booking[],
+  criteria: AvailabilityCriteria,
+): Room[] {
   const requestedStart = new Date(criteria.startTime);
   const requestedEnd = new Date(criteria.endTime);
 
   return rooms.filter((room) => {
-    if (room.active === false) {
+    if (!room.active) {
       return false;
     }
 
@@ -11,9 +17,8 @@ export function findAvailableRooms(rooms, bookings, criteria) {
       return false;
     }
 
-    const roomAmenities = room.amenities || [];
     const hasAmenities = criteria.requiredAmenities.every((amenity) =>
-      roomAmenities.includes(amenity),
+      room.amenities.includes(amenity),
     );
     if (!hasAmenities) {
       return false;

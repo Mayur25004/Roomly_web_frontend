@@ -1,18 +1,19 @@
-function getResponseMessage(responseBody) {
+function getResponseMessage(responseBody: unknown): string {
   if (!responseBody || typeof responseBody !== "object") {
     return "";
   }
 
-  if (typeof responseBody.message === "string") {
-    return responseBody.message;
+  const body = responseBody as Record<string, unknown>;
+  if (typeof body.message === "string") {
+    return body.message;
   }
-  if (typeof responseBody.error === "string") {
-    return responseBody.error;
+  if (typeof body.error === "string") {
+    return body.error;
   }
   return "";
 }
 
-function getStatusMessage(status) {
+function getStatusMessage(status: number): string {
   if (status === 400 || status === 422) {
     return "Some details were rejected. Check the form and try again.";
   }
@@ -28,7 +29,11 @@ function getStatusMessage(status) {
   return `The API request failed with status ${status}.`;
 }
 
-export function getApiErrorMessage(status, responseBody, requestId) {
+export function getApiErrorMessage(
+  status: number,
+  responseBody: unknown,
+  requestId: string | null,
+): string {
   const message = getResponseMessage(responseBody) || getStatusMessage(status);
   return requestId ? `${message} Request ID: ${requestId}.` : message;
 }

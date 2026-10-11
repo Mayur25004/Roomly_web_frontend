@@ -1,4 +1,4 @@
-import { apiRequest } from "../api/apiClient.js";
+import { apiRequest } from "../api/apiClient.ts";
 import {
   loginWithMock,
   logoutMock,

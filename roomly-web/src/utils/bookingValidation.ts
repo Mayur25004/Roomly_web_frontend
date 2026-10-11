@@ -1,9 +1,14 @@
-import { combineLocalDateAndTime } from "./dateTime.js";
+import type { BookingValidationInput, TimeWindowInput } from "../types/models.ts";
+import { combineLocalDateAndTime } from "./dateTime.ts";
 
 export const MIN_DURATION_MINUTES = 15;
 export const MAX_DURATION_MINUTES = 4 * 60;
 
-export function validateTimeWindow({ date, startTime, endTime }, now = new Date()) {
+export function validateTimeWindow(
+  timeWindow: TimeWindowInput,
+  now: Date = new Date(),
+): string {
+  const { date, startTime, endTime } = timeWindow;
   if (!date || !startTime || !endTime) {
     return "Choose a date, start time, and end time.";
   }
@@ -20,7 +25,7 @@ export function validateTimeWindow({ date, startTime, endTime }, now = new Date(
     return "The end time must be after the start time on the selected date.";
   }
 
-  const durationMinutes = (end - start) / (60 * 1000);
+  const durationMinutes = (end.getTime() - start.getTime()) / (60 * 1000);
   if (durationMinutes < MIN_DURATION_MINUTES) {
     return "Bookings must be at least 15 minutes long.";
   }
@@ -30,7 +35,11 @@ export function validateTimeWindow({ date, startTime, endTime }, now = new Date(
   return "";
 }
 
-export function validateBookingInput(booking, roomCapacity, now = new Date()) {
+export function validateBookingInput(
+  booking: BookingValidationInput,
+  roomCapacity: number,
+  now: Date = new Date(),
+): string {
   if (!booking.title.trim()) {
     return "Enter a title for this meeting.";
   }

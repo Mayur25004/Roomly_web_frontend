@@ -1,4 +1,10 @@
-export function calculateUtilizationRows(rooms, bookings, dateRange) {
+import type { Booking, Room, UtilizationDateRange, UtilizationRow } from "../types/models.ts";
+
+export function calculateUtilizationRows(
+  rooms: Room[],
+  bookings: Booking[],
+  dateRange: UtilizationDateRange,
+): UtilizationRow[] {
   const start = new Date(`${dateRange.startDate}T00:00:00`);
   const end = new Date(`${dateRange.endDate}T00:00:00`);
   end.setDate(end.getDate() + 1);

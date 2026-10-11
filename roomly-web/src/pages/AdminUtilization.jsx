@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { adminService } from "../services/adminService.js";
-import { formatDate, getLocalDateString } from "../utils/dateTime.js";
+import { formatDate, getLocalDateString } from "../utils/dateTime.ts";
 
 function getMonthStartDate() {
   const today = new Date();

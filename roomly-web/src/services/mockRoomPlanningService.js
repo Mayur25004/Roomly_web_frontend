@@ -1,7 +1,7 @@
 import { mockRooms } from "../data/mockRooms.js";
 import { getMockMyBookings } from "./mockMyBookingsService.js";
-import { getLocalDateString } from "../utils/dateTime.js";
-import { findAvailableRooms } from "../utils/availabilityRules.js";
+import { getLocalDateString } from "../utils/dateTime.ts";
+import { findAvailableRooms } from "../utils/availabilityRules.ts";
 
 export async function searchMockAvailability(criteria) {
   const bookings = await getMockMyBookings();
