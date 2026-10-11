@@ -72,8 +72,8 @@ function AdminRooms() {
         try {
             await adminService.saveRoom({
                 id: editingId,
-                name,
-                location,
+                name: name.trim(),
+                location: location.trim(),
                 capacity: Number(capacity),
                 active: editingId ? active : true,
                 amenities: selectedAmenities,

@@ -50,7 +50,11 @@ function AdminAmenities() {
         }
         setIsSaving(true);
         try {
-            await adminService.saveAmenity({ id: editingId, name, description });
+            await adminService.saveAmenity({
+                id: editingId,
+                name: name.trim(),
+                description: description.trim(),
+            });
             await loadAmenities();
             setStatusMessage(editingId ? "Amenity updated." : "Amenity added.");
             resetForm();
