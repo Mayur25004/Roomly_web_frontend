@@ -34,6 +34,26 @@ function RoomCard({ room }) {
         Capacity: {room.capacity} people
       </p>
 
+      <div className="mt-5">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Amenities
+        </h3>
+        {room.amenities.length > 0 ? (
+          <ul aria-label={`${room.name} amenities`} className="mt-2 flex flex-wrap gap-2">
+            {room.amenities.map((amenity) => (
+              <li
+                key={amenity}
+                className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700"
+              >
+                {amenity}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-2 text-sm text-slate-500">No amenities listed</p>
+        )}
+      </div>
+
       {available ? (
         <Link
           to={`/bookings/new/${room.id}`}

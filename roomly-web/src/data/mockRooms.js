@@ -5,6 +5,7 @@ export const mockRooms = [
     location: "Floor 1",
     capacity: 8,
     status: "Available",
+    amenities: ["Display", "Whiteboard", "Video conferencing"],
   },
   {
     id: 2,
@@ -12,6 +13,7 @@ export const mockRooms = [
     location: "Floor 2",
     capacity: 6,
     status: "Available",
+    amenities: ["Display", "Video conferencing"],
   },
   {
     id: 3,
@@ -19,5 +21,6 @@ export const mockRooms = [
     location: "Floor 3",
     capacity: 12,
     status: "Booked",
+    amenities: ["Whiteboard", "Conference phone", "Video conferencing"],
   },
 ];
