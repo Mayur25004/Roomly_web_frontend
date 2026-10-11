@@ -162,6 +162,11 @@ function MyBookings() {
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
           {visibleBookings.map((booking) => {
             const isCancelled = booking.status === "cancelled";
+            const statusLabel = isCancelled
+              ? "Cancelled"
+              : selectedView === "past"
+                ? "Completed"
+                : "Confirmed";
             const canCancel =
               selectedView === "upcoming" && !isCancelled;
 
@@ -186,7 +191,7 @@ function MyBookings() {
                         : "bg-emerald-100 text-emerald-700"
                     }`}
                   >
-                    {isCancelled ? "Cancelled" : "Confirmed"}
+                    {statusLabel}
                   </span>
                 </div>
 
