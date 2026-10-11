@@ -1,6 +1,6 @@
 import { mockAmenities } from "../data/mockAmenities.js";
 import { mockRooms } from "../data/mockRooms.js";
-import { getMockMyBookings } from "./mockMyBookingsService.js";
+import { getAllMockBookings } from "./mockMyBookingsService.js";
 import { calculateUtilizationRows } from "../utils/utilization.js";
 function copyRoom(room) {
     return { ...room, amenities: [...room.amenities] };
@@ -62,6 +62,6 @@ export async function saveMockAmenity(amenityDetails) {
     return { ...newAmenity };
 }
 export async function getMockUtilizationReport(dateRange) {
-    const bookings = await getMockMyBookings();
+    const bookings = await getAllMockBookings();
     return calculateUtilizationRows(mockRooms, bookings, dateRange);
 }

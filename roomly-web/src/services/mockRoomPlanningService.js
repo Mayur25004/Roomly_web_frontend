@@ -1,9 +1,9 @@
 import { mockRooms } from "../data/mockRooms.js";
-import { getMockMyBookings } from "./mockMyBookingsService.js";
+import { getAllMockBookings } from "./mockMyBookingsService.js";
 import { getLocalDateString } from "../utils/dateTime.js";
 import { findAvailableRooms } from "../utils/availabilityRules.js";
 export async function searchMockAvailability(criteria) {
-    const bookings = await getMockMyBookings();
+    const bookings = await getAllMockBookings();
     return findAvailableRooms(mockRooms, bookings, criteria);
 }
 export async function getMockRoomSchedule(roomId, date) {
@@ -11,7 +11,7 @@ export async function getMockRoomSchedule(roomId, date) {
     if (!room) {
         throw new Error("That room could not be found.");
     }
-    const bookings = await getMockMyBookings();
+    const bookings = await getAllMockBookings();
     return bookings
         .filter((booking) => String(booking.roomId) === String(roomId) &&
         getLocalDateString(new Date(booking.startTime)) === date)

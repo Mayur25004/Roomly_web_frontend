@@ -1,6 +1,7 @@
 import { apiRequest } from "../api/apiClient.js";
 import { loginWithMock, logoutMock, registerWithMock, } from "./mockAuthService.js";
-const SESSION_USER_KEY = "roomly-session-user";
+import { clearSavedUser, getSavedUser, saveUser } from "./sessionStore.js";
+export { clearSavedUser };
 const useMockServices = import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_SERVICES !== "false";
 const apiSettings = {
     loginPath: import.meta.env.VITE_LOGIN_PATH?.trim(),
@@ -54,19 +55,8 @@ async function restoreCurrentUserFromApi() {
     const response = await apiRequest(path, { credentials: "include" });
     return validateUserResponse(response);
 }
-function saveUser(user) {
-    sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(user));
-    return user;
-}
 export function getCurrentUser() {
-    try {
-        const storedUser = sessionStorage.getItem(SESSION_USER_KEY);
-        return storedUser ? JSON.parse(storedUser) : null;
-    }
-    catch {
-        sessionStorage.removeItem(SESSION_USER_KEY);
-        return null;
-    }
+    return getSavedUser();
 }
 export async function login(email, password) {
     const user = useMockServices
@@ -90,7 +80,7 @@ export async function logout() {
         }
     }
     finally {
-        sessionStorage.removeItem(SESSION_USER_KEY);
+        clearSavedUser();
     }
 }
 export async function restoreSession() {
@@ -102,10 +92,7 @@ export async function restoreSession() {
         return saveUser(user);
     }
     catch (error) {
-        sessionStorage.removeItem(SESSION_USER_KEY);
+        clearSavedUser();
         throw error;
     }
-}
-export function clearSavedUser() {
-    sessionStorage.removeItem(SESSION_USER_KEY);
 }

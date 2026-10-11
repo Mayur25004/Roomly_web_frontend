@@ -1,4 +1,5 @@
 import { mockRooms } from "../data/mockRooms.js";
+import { getSavedUser } from "./sessionStore.js";
 function dateFromToday(daysFromToday, hour, minute) {
     const date = new Date();
     date.setDate(date.getDate() + daysFromToday);
@@ -9,6 +10,7 @@ function dateFromToday(daysFromToday, hour, minute) {
 let mockBookings = [
     {
         id: "booking-101",
+        userId: "employee-demo",
         roomName: "Conference Room A",
         roomId: 1,
         location: "Floor 1",
@@ -20,6 +22,7 @@ let mockBookings = [
     },
     {
         id: "booking-102",
+        userId: "employee-demo",
         roomName: "Meeting Room B",
         roomId: 2,
         location: "Floor 2",
@@ -31,6 +34,7 @@ let mockBookings = [
     },
     {
         id: "booking-103",
+        userId: "employee-demo",
         roomName: "Board Room",
         roomId: 3,
         location: "Floor 3",
@@ -42,6 +46,7 @@ let mockBookings = [
     },
     {
         id: "booking-104",
+        userId: "employee-demo",
         roomName: "Conference Room A",
         roomId: 1,
         location: "Floor 1",
@@ -53,10 +58,21 @@ let mockBookings = [
     },
 ];
 export async function getMockMyBookings() {
+    const currentUser = getSavedUser();
+    if (!currentUser) {
+        return [];
+    }
+    return mockBookings
+        .filter((booking) => String(booking.userId) === String(currentUser.id))
+        .map((booking) => ({ ...booking }));
+}
+export async function getAllMockBookings() {
     return mockBookings.map((booking) => ({ ...booking }));
 }
 export async function cancelMockBooking(bookingId) {
-    const booking = mockBookings.find((item) => item.id === bookingId);
+    const currentUser = getSavedUser();
+    const booking = mockBookings.find((item) => item.id === bookingId &&
+        String(item.userId) === String(currentUser?.id));
     if (!booking) {
         throw new Error("That booking could not be found.");
     }
@@ -70,6 +86,10 @@ export async function cancelMockBooking(bookingId) {
     return { ...booking };
 }
 export async function createMockBooking(bookingDetails) {
+    const currentUser = getSavedUser();
+    if (!currentUser) {
+        throw new Error("Sign in before creating a booking.");
+    }
     const room = mockRooms.find((item) => String(item.id) === String(bookingDetails.roomId));
     if (!room) {
         throw new Error("That room could not be found.");
@@ -88,6 +108,7 @@ export async function createMockBooking(bookingDetails) {
     }
     const newBooking = {
         id: `booking-${Date.now()}`,
+        userId: currentUser.id,
         roomName: room.name,
         roomId: bookingDetails.roomId,
         location: room.location,
