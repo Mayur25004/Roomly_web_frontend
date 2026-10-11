@@ -4,7 +4,7 @@ export const mockRooms = [
     name: "Conference Room A",
     location: "Floor 1",
     capacity: 8,
-    status: "Available",
+    active: true,
     amenities: ["Display", "Whiteboard", "Video conferencing"],
   },
   {
@@ -12,7 +12,7 @@ export const mockRooms = [
     name: "Meeting Room B",
     location: "Floor 2",
     capacity: 6,
-    status: "Available",
+    active: true,
     amenities: ["Display", "Video conferencing"],
   },
   {
@@ -20,7 +20,7 @@ export const mockRooms = [
     name: "Board Room",
     location: "Floor 3",
     capacity: 12,
-    status: "Booked",
+    active: true,
     amenities: ["Whiteboard", "Conference phone", "Video conferencing"],
   },
 ];

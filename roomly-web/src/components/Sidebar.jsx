@@ -2,6 +2,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   CalendarDays,
+  Clock3,
   LayoutGrid,
   UserRound,
   LogOut,
@@ -12,6 +13,7 @@ function Sidebar() {
 
   const links = [
     { name: "Browse Rooms", path: "/rooms", icon: LayoutGrid },
+    { name: "Find Availability", path: "/availability", icon: Clock3 },
     { name: "My Bookings", path: "/my-bookings", icon: CalendarDays },
     { name: "Profile", path: "/profile", icon: UserRound },
   ];

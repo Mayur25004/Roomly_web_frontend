@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Users, MapPin, DoorOpen } from "lucide-react";
 
 function RoomCard({ room }) {
-  const available = room.status === "Available";
+  const active = room.active !== false;
 
   return (
     <article className="min-w-0 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md">
@@ -13,12 +13,12 @@ function RoomCard({ room }) {
 
         <span
           className={`rounded-full px-3 py-1 text-xs font-semibold ${
-            available
+            active
               ? "bg-emerald-100 text-emerald-700"
-              : "bg-red-100 text-red-700"
+              : "bg-slate-100 text-slate-600"
           }`}
         >
-          {room.status}
+          {active ? "Active" : "Inactive"}
         </span>
       </div>
 
@@ -38,9 +38,9 @@ function RoomCard({ room }) {
         <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
           Amenities
         </h3>
-        {room.amenities.length > 0 ? (
+        {(room.amenities || []).length > 0 ? (
           <ul aria-label={`${room.name} amenities`} className="mt-2 flex flex-wrap gap-2">
-            {room.amenities.map((amenity) => (
+            {(room.amenities || []).map((amenity) => (
               <li
                 key={amenity}
                 className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700"
@@ -54,7 +54,7 @@ function RoomCard({ room }) {
         )}
       </div>
 
-      {available ? (
+      {active ? (
         <Link
           to={`/bookings/new/${room.id}`}
           className="mt-6 flex w-full items-center justify-center rounded-lg bg-violet-600 px-4 py-3 text-sm font-semibold text-white hover:bg-violet-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700"
@@ -70,6 +70,13 @@ function RoomCard({ room }) {
           Unavailable
         </button>
       )}
+
+      <Link
+        to={`/rooms/${room.id}/schedule`}
+        className="mt-3 flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-violet-700 hover:bg-violet-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700"
+      >
+        View day schedule
+      </Link>
     </article>
   );
 }

@@ -3,19 +3,7 @@ import { useLocation } from "react-router-dom";
 import { CalendarDays, Clock3, MapPin, Users } from "lucide-react";
 import { ApiError } from "../api/apiClient.js";
 import { myBookingsService } from "../services/myBookingsService.js";
-
-function formatDate(dateTime) {
-  return new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-  }).format(new Date(dateTime));
-}
-
-function formatTime(dateTime) {
-  return new Intl.DateTimeFormat(undefined, {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(new Date(dateTime));
-}
+import { formatDate, formatTime } from "../utils/dateTime.js";
 
 function getErrorMessage(error) {
   if (error instanceof ApiError || error instanceof Error) {

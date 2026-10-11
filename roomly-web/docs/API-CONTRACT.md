@@ -60,4 +60,14 @@ The backend must remain the final authority for duration, capacity, availability
 
 **Status: Proposed — confirm with the Go backend developer before real API integration.**
 
-The Browse Rooms page can load a list from the path configured by `VITE_ROOMS_PATH`. Each proposed room includes `id`, `name`, `location`, `capacity`, `status`, and an `amenities` list. Until pagination and filter query parameters are agreed, the frontend applies the room filters and six-item pagination to the returned list. Confirm whether the backend will return a complete list or server-paginated results before enabling this API service in production.
+The Browse Rooms page can load a list from the path configured by `VITE_ROOMS_PATH`. Each proposed room includes `id`, `name`, `location`, `capacity`, boolean `active`, and an `amenities` list. Until pagination and filter query parameters are agreed, the frontend applies the room filters and six-item pagination to the returned list. Confirm whether the backend will return a complete list or server-paginated results before enabling this API service in production.
+
+
+## Availability and room schedule draft
+
+**Status: Proposed — confirm with the Go backend developer before real API integration.**
+
+- Availability search uses `VITE_ROOM_AVAILABILITY_PATH` with `startTime` and `endTime` as UTC ISO 8601 query values. Optional `minimumCapacity` and repeated `amenities` query values are also sent. The response is proposed to be a list of rooms available for the entire window.
+- A daily room schedule uses `VITE_ROOM_SCHEDULE_PATH_TEMPLATE` with `{roomId}` and a `date` query value (`YYYY-MM-DD`). The response is proposed to be a list of bookings with room, title, attendee count, start/end time, and status.
+
+Confirm the actual route, query names, response envelope, and whether cancelled bookings appear in schedules before setting these environment variables. In mock mode, cancelled bookings are shown in a day schedule but do not block an availability search.

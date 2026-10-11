@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar.jsx";
 
 const pageTitles = {
   "/rooms": "Browse Rooms",
+  "/availability": "Find an Available Room",
   "/my-bookings": "My Bookings",
 };
 
@@ -12,9 +13,13 @@ function MainLayout() {
 
   useEffect(() => {
     const isBookingPage = location.pathname.startsWith("/bookings/new/");
+    const isRoomSchedulePage = location.pathname.startsWith("/rooms/") &&
+      location.pathname.endsWith("/schedule");
     const pageName = isBookingPage
       ? "Create Booking"
-      : pageTitles[location.pathname] || "Rooms";
+      : isRoomSchedulePage
+        ? "Room Schedule"
+        : pageTitles[location.pathname] || "Rooms";
     document.title = `Roomly - ${pageName}`;
   }, [location.pathname]);
 

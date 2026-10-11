@@ -86,6 +86,9 @@ export async function createMockBooking(bookingDetails) {
   if (!room) {
     throw new Error("That room could not be found.");
   }
+  if (room.active === false) {
+    throw new Error("That room is inactive and cannot be booked.");
+  }
 
   const hasConflict = mockBookings.some((booking) => {
     const overlaps =

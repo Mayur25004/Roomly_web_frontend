@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, MapPin, Users } from "lucide-react";
 import { mockRooms } from "../data/mockRooms.js";
 import { myBookingsService } from "../services/myBookingsService.js";
+import { combineLocalDateAndTime } from "../utils/dateTime.js";
 
 const MIN_DURATION_MINUTES = 15;
 const MAX_DURATION_MINUTES = 4 * 60;
@@ -41,8 +42,8 @@ function BookingForm() {
       return "Choose a date, start time, and end time.";
     }
 
-    const start = new Date(`${meetingDate}T${startTime}`);
-    const end = new Date(`${meetingDate}T${endTime}`);
+    const start = combineLocalDateAndTime(meetingDate, startTime);
+    const end = combineLocalDateAndTime(meetingDate, endTime);
     if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
       return "Choose a valid date and time.";
     }
@@ -88,8 +89,8 @@ function BookingForm() {
         roomId: room.id,
         title: title.trim(),
         attendeeCount: Number(attendeeCount),
-        startTime: new Date(`${meetingDate}T${startTime}`).toISOString(),
-        endTime: new Date(`${meetingDate}T${endTime}`).toISOString(),
+        startTime: combineLocalDateAndTime(meetingDate, startTime).toISOString(),
+        endTime: combineLocalDateAndTime(meetingDate, endTime).toISOString(),
       });
       navigate("/my-bookings", { state: { bookingCreated: true } });
     } catch (error) {
@@ -113,7 +114,7 @@ function BookingForm() {
     );
   }
 
-  if (room.status !== "Available") {
+  if (room.active === false) {
     return (
       <section className="space-y-5">
         <h1 className="text-3xl font-bold text-slate-900">Room unavailable</h1>
