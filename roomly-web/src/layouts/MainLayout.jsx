@@ -5,6 +5,7 @@ const pageTitles = {
     "/rooms": "Browse Rooms",
     "/availability": "Find an Available Room",
     "/my-bookings": "My Bookings",
+    "/profile": "My Profile",
     "/admin": "Admin Dashboard",
     "/admin/rooms": "Manage Rooms",
     "/admin/amenities": "Manage Amenities",

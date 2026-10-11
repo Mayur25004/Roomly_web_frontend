@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { CalendarDays, Clock3, DoorOpen, LayoutGrid, ShieldCheck, LogOut, } from "lucide-react";
+import { CalendarDays, Clock3, DoorOpen, LayoutGrid, ShieldCheck, LogOut, UserRound } from "lucide-react";
 function Sidebar({ currentUser, onLogout }) {
     const links = [
         { name: "Browse Rooms", path: "/rooms", icon: LayoutGrid },
         { name: "Find Availability", path: "/availability", icon: Clock3 },
         { name: "My Bookings", path: "/my-bookings", icon: CalendarDays },
+        { name: "Profile", path: "/profile", icon: UserRound },
     ];
     if (currentUser.role === "admin") {
         links.push({ name: "Admin Dashboard", path: "/admin", icon: ShieldCheck }, { name: "Manage Rooms", path: "/admin/rooms", icon: LayoutGrid }, { name: "Amenities", path: "/admin/amenities", icon: DoorOpen }, { name: "Utilization", path: "/admin/reports", icon: Clock3 });

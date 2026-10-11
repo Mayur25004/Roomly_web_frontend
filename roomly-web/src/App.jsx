@@ -10,6 +10,7 @@ import Availability from "./pages/Availability.jsx";
 import BookingForm from "./pages/BookingForm.jsx";
 import Login from "./pages/Login.jsx";
 import MyBookings from "./pages/MyBookings.jsx";
+import Profile from "./pages/Profile.jsx";
 import Register from "./pages/Register.jsx";
 import Rooms from "./pages/Rooms.jsx";
 import RoomSchedule from "./pages/RoomSchedule.jsx";
@@ -78,6 +79,7 @@ function App() {
             <Route path="/rooms/:roomId/schedule" element={<RoomSchedule />}/>
             <Route path="/bookings/new/:roomId" element={<BookingForm />}/>
             <Route path="/my-bookings" element={<MyBookings />}/>
+            <Route path="/profile" element={<Profile currentUser={currentUser}/>}/>
             <Route element={<ProtectedRoute user={currentUser} requiredRole="admin"/>}>
               <Route path="/admin" element={currentUser ? <AdminDashboard currentUser={currentUser}/> : null}/>
               <Route path="/admin/rooms" element={<AdminRooms />}/>
