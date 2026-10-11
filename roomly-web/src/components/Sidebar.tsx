@@ -1,4 +1,6 @@
 
+import type { CurrentUser } from "../types/models.ts";
+import type { LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   CalendarDays,
@@ -9,8 +11,19 @@ import {
   LogOut,
 } from "lucide-react";
 
-function Sidebar({ currentUser, onLogout }) {
-  const links = [
+interface SidebarProps {
+  currentUser: CurrentUser;
+  onLogout: () => void;
+}
+
+interface SidebarLink {
+  name: string;
+  path: string;
+  icon: LucideIcon;
+}
+
+function Sidebar({ currentUser, onLogout }: SidebarProps) {
+  const links: SidebarLink[] = [
     { name: "Browse Rooms", path: "/rooms", icon: LayoutGrid },
     { name: "Find Availability", path: "/availability", icon: Clock3 },
     { name: "My Bookings", path: "/my-bookings", icon: CalendarDays },

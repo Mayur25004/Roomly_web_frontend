@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import MainLayout from "./layouts/MainLayout.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import MainLayout from "./layouts/MainLayout.tsx";
 import AdminAmenities from "./pages/AdminAmenities.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import AdminRooms from "./pages/AdminRooms.jsx";

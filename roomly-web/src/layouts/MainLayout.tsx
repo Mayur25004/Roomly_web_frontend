@@ -1,8 +1,9 @@
+import type { CurrentUser } from "../types/models.ts";
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Sidebar from "../components/Sidebar.jsx";
+import Sidebar from "../components/Sidebar.tsx";
 
-const pageTitles = {
+const pageTitles: Record<string, string> = {
   "/rooms": "Browse Rooms",
   "/availability": "Find an Available Room",
   "/my-bookings": "My Bookings",
@@ -12,7 +13,13 @@ const pageTitles = {
   "/admin/reports": "Room Utilization",
 };
 
-function MainLayout({ currentUser, onLogout }) {
+function MainLayout({
+  currentUser,
+  onLogout,
+}: {
+  currentUser: CurrentUser;
+  onLogout: () => void;
+}) {
   const location = useLocation();
 
   useEffect(() => {

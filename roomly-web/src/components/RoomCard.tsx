@@ -1,7 +1,8 @@
+import type { Room } from "../types/models.ts";
 import { Link } from "react-router-dom";
 import { Users, MapPin, DoorOpen } from "lucide-react";
 
-function RoomCard({ room }) {
+function RoomCard({ room }: { room: Room }) {
   const active = room.active !== false;
 
   return (
