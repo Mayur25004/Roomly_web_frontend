@@ -1,7 +1,20 @@
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 
+const pageTitles = {
+  "/rooms": "Browse Rooms",
+  "/my-bookings": "My Bookings",
+};
+
 function MainLayout() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const pageName = pageTitles[location.pathname] || "Rooms";
+    document.title = `Roomly - ${pageName}`;
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen bg-slate-50">
       <Sidebar />
