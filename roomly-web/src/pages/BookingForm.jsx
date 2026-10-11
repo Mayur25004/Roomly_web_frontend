@@ -13,6 +13,7 @@ function BookingForm() {
   const room = mockRooms.find((item) => String(item.id) === roomId);
   const [title, setTitle] = useState("");
   const [attendeeCount, setAttendeeCount] = useState("1");
+  const [meetingDate, setMeetingDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,14 +37,22 @@ function BookingForm() {
       return `This room can hold up to ${room.capacity} people.`;
     }
 
-    const start = new Date(startTime);
-    const end = new Date(endTime);
-    if (!startTime || !endTime || Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      return "Choose a valid start and end time.";
+    if (!meetingDate || !startTime || !endTime) {
+      return "Choose a date, start time, and end time.";
+    }
+
+    const start = new Date(`${meetingDate}T${startTime}`);
+    const end = new Date(`${meetingDate}T${endTime}`);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+      return "Choose a valid date and time.";
     }
 
     if (start <= new Date()) {
       return "The booking must start in the future.";
+    }
+
+    if (end <= start) {
+      return "The end time must be after the start time on the selected date.";
     }
 
     const durationMinutes = (end - start) / (60 * 1000);
@@ -79,8 +88,8 @@ function BookingForm() {
         roomId: room.id,
         title: title.trim(),
         attendeeCount: Number(attendeeCount),
-        startTime: new Date(startTime).toISOString(),
-        endTime: new Date(endTime).toISOString(),
+        startTime: new Date(`${meetingDate}T${startTime}`).toISOString(),
+        endTime: new Date(`${meetingDate}T${endTime}`).toISOString(),
       });
       navigate("/my-bookings", { state: { bookingCreated: true } });
     } catch (error) {
@@ -185,6 +194,19 @@ function BookingForm() {
           <p className="text-xs text-slate-500">This room holds up to {room.capacity} people.</p>
         </div>
 
+        <div className="space-y-2">
+          <label htmlFor="meeting-date" className="block text-sm font-semibold text-slate-700">
+            Meeting date
+          </label>
+          <input
+            id="meeting-date"
+            type="date"
+            value={meetingDate}
+            onChange={(event) => setMeetingDate(event.target.value)}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-100"
+          />
+        </div>
+
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-2">
             <label htmlFor="start-time" className="block text-sm font-semibold text-slate-700">
@@ -192,7 +214,7 @@ function BookingForm() {
             </label>
             <input
               id="start-time"
-              type="datetime-local"
+              type="time"
               value={startTime}
               onChange={(event) => setStartTime(event.target.value)}
               className="w-full min-w-0 rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-100"
@@ -204,7 +226,7 @@ function BookingForm() {
             </label>
             <input
               id="end-time"
-              type="datetime-local"
+              type="time"
               value={endTime}
               onChange={(event) => setEndTime(event.target.value)}
               className="w-full min-w-0 rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-100"
@@ -213,7 +235,7 @@ function BookingForm() {
         </div>
 
         <p className="text-xs text-slate-500">
-          Bookings must be between 15 minutes and 4 hours. Times are shown in your local timezone and sent to the API in UTC.
+          Choose one meeting date and the start and end times for that day. Bookings must be between 15 minutes and 4 hours. Times use your local timezone and are sent to the API in UTC.
         </p>
 
         <button
