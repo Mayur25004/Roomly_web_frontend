@@ -1,25 +1,22 @@
 
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   CalendarDays,
   Clock3,
   LayoutGrid,
-  UserRound,
+  ShieldCheck,
   LogOut,
 } from "lucide-react";
 
-function Sidebar() {
-  const navigate = useNavigate();
-
+function Sidebar({ currentUser, onLogout }) {
   const links = [
     { name: "Browse Rooms", path: "/rooms", icon: LayoutGrid },
     { name: "Find Availability", path: "/availability", icon: Clock3 },
     { name: "My Bookings", path: "/my-bookings", icon: CalendarDays },
-    { name: "Profile", path: "/profile", icon: UserRound },
   ];
 
-  function handleLogout() {
-    navigate("/login");
+  if (currentUser.role === "admin") {
+    links.push({ name: "Admin Dashboard", path: "/admin", icon: ShieldCheck });
   }
 
   return (
@@ -58,7 +55,7 @@ function Sidebar() {
 
       <button
         type="button"
-        onClick={handleLogout}
+        onClick={onLogout}
         className="mt-auto flex w-full items-center gap-3 rounded-[9px] border-0 bg-transparent px-3 py-3.25 text-sm text-[#fca5a5] transition-colors hover:bg-[#302b45] max-sm:justify-center max-sm:px-2"
       >
         <LogOut size={19} />

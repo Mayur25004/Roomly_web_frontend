@@ -66,6 +66,10 @@ export async function apiRequest(path, options = {}) {
   const requestId = response.headers.get("X-Request-ID");
   const responseBody = await readResponseBody(response);
 
+  if (response.status === 401 && typeof window !== "undefined") {
+    window.dispatchEvent(new Event("roomly:unauthorized"));
+  }
+
   if (!response.ok) {
     const requestIdMessage = requestId ? ` Request ID: ${requestId}.` : "";
     throw new ApiError(

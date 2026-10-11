@@ -71,3 +71,16 @@ The Browse Rooms page can load a list from the path configured by `VITE_ROOMS_PA
 - A daily room schedule uses `VITE_ROOM_SCHEDULE_PATH_TEMPLATE` with `{roomId}` and a `date` query value (`YYYY-MM-DD`). The response is proposed to be a list of bookings with room, title, attendee count, start/end time, and status.
 
 Confirm the actual route, query names, response envelope, and whether cancelled bookings appear in schedules before setting these environment variables. In mock mode, cancelled bookings are shown in a day schedule but do not block an availability search.
+
+
+## Authentication draft
+
+**Status: Proposed — confirm with the Go backend developer before enabling real authentication.**
+
+- Login: `POST` to `VITE_LOGIN_PATH` with `{ email, password }`.
+- Employee registration: `POST` to `VITE_REGISTER_PATH` with `{ name, email, password }`. The frontend never sends a role; the backend must create public registrations as employees.
+- Current user: request `VITE_CURRENT_USER_PATH` to restore the active session.
+- Logout: `POST` to `VITE_LOGOUT_PATH`.
+- Each successful auth response is proposed to contain `{ user: { id, name, email, role } }`, where `role` is `employee` or `admin`. Admin creation remains backend-controlled.
+
+The API service currently sends requests with credentials enabled and keeps only the returned user summary in `sessionStorage`; it does not store a password or bearer token. Confirm cookie/session behavior, CORS credentials, endpoint paths, response shape, expired-session status (the frontend currently treats HTTP 401 as an expired session), and registration validation before using the real service. Development mock accounts live in `src/data/mockUsers.js` and must be removed before final submission.

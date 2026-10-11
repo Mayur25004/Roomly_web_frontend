@@ -6,9 +6,10 @@ const pageTitles = {
   "/rooms": "Browse Rooms",
   "/availability": "Find an Available Room",
   "/my-bookings": "My Bookings",
+  "/admin": "Admin Dashboard",
 };
 
-function MainLayout() {
+function MainLayout({ currentUser, onLogout }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function MainLayout() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <Sidebar />
+      <Sidebar currentUser={currentUser} onLogout={onLogout} />
 
       <main className="ml-[250px] min-h-screen min-w-0 p-8 max-sm:ml-[76px] max-sm:p-4">
         <Outlet />
