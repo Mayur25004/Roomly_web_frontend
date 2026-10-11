@@ -17,7 +17,7 @@ function MainLayout({
   currentUser,
   onLogout,
 }: {
-  currentUser: CurrentUser;
+  currentUser: CurrentUser | null;
   onLogout: () => void;
 }) {
   const location = useLocation();
@@ -36,7 +36,7 @@ function MainLayout({
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <Sidebar currentUser={currentUser} onLogout={onLogout} />
+      {currentUser && <Sidebar currentUser={currentUser} onLogout={onLogout} />}
 
       <main className="ml-[250px] min-h-screen min-w-0 p-8 max-sm:ml-[76px] max-sm:p-4">
         <Outlet />

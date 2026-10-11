@@ -1,3 +1,4 @@
+import type { CurrentUser } from "./types/models.ts";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
@@ -8,9 +9,9 @@ import AdminRooms from "./pages/AdminRooms.tsx";
 import AdminUtilization from "./pages/AdminUtilization.tsx";
 import Availability from "./pages/Availability.tsx";
 import BookingForm from "./pages/BookingForm.tsx";
-import Login from "./pages/Login.jsx";
+import Login from "./pages/Login.tsx";
 import MyBookings from "./pages/MyBookings.tsx";
-import Register from "./pages/Register.jsx";
+import Register from "./pages/Register.tsx";
 import Rooms from "./pages/Rooms.tsx";
 import RoomSchedule from "./pages/RoomSchedule.tsx";
 import {
@@ -20,7 +21,7 @@ import {
 } from "./services/authService.ts";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [isRestoringSession, setIsRestoringSession] = useState(true);
 
   useEffect(() => {
@@ -92,7 +93,10 @@ function App() {
             <Route path="/bookings/new/:roomId" element={<BookingForm />} />
             <Route path="/my-bookings" element={<MyBookings />} />
             <Route element={<ProtectedRoute user={currentUser} requiredRole="admin" />}>
-              <Route path="/admin" element={<AdminDashboard currentUser={currentUser} />} />
+              <Route
+                path="/admin"
+                element={currentUser ? <AdminDashboard currentUser={currentUser} /> : null}
+              />
               <Route path="/admin/rooms" element={<AdminRooms />} />
               <Route path="/admin/amenities" element={<AdminAmenities />} />
               <Route path="/admin/reports" element={<AdminUtilization />} />

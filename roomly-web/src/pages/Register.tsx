@@ -1,33 +1,39 @@
+import type { CurrentUser } from "../types/models.ts";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { login } from "../services/authService.ts";
+import { registerEmployee } from "../services/authService.ts";
 
-function Login({ currentUser, onLogin }) {
+function Register({ currentUser, onRegister }: { currentUser: CurrentUser | null; onRegister: (user: CurrentUser) => void }) {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    document.title = "Roomly - Login";
+    document.title = "Roomly - Register";
   }, []);
 
   if (currentUser) {
     return <Navigate to={currentUser.role === "admin" ? "/admin" : "/rooms"} replace />;
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
-    setIsSubmitting(true);
+    if (password.length < 8) {
+      setErrorMessage("Use a password with at least 8 characters.");
+      return;
+    }
 
+    setIsSubmitting(true);
     try {
-      const user = await login(email, password);
-      onLogin(user);
-      navigate(user.role === "admin" ? "/admin" : "/rooms", { replace: true });
+      const user = await registerEmployee(name, email, password);
+      onRegister(user);
+      navigate("/rooms", { replace: true, state: { registered: true } });
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "Could not sign in. Try again.");
+      setErrorMessage(error instanceof Error ? error.message : "Could not create your account. Try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -38,8 +44,8 @@ function Login({ currentUser, onLogin }) {
       <section className="w-full max-w-md space-y-7 rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
         <header>
           <p className="text-sm font-bold text-violet-700">Roomly</p>
-          <h1 className="mt-2 text-3xl font-bold text-slate-900">Welcome back</h1>
-          <p className="mt-2 text-sm text-slate-500">Sign in to manage meeting room bookings.</p>
+          <h1 className="mt-2 text-3xl font-bold text-slate-900">Create an account</h1>
+          <p className="mt-2 text-sm text-slate-500">Employee accounts can book and manage meeting rooms.</p>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -49,11 +55,25 @@ function Login({ currentUser, onLogin }) {
             </p>
           )}
           <div className="space-y-2">
-            <label htmlFor="login-email" className="block text-sm font-semibold text-slate-700">
+            <label htmlFor="register-name" className="block text-sm font-semibold text-slate-700">
+              Full name
+            </label>
+            <input
+              id="register-name"
+              type="text"
+              autoComplete="name"
+              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-100"
+            />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="register-email" className="block text-sm font-semibold text-slate-700">
               Email
             </label>
             <input
-              id="login-email"
+              id="register-email"
               type="email"
               autoComplete="email"
               required
@@ -63,42 +83,37 @@ function Login({ currentUser, onLogin }) {
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="login-password" className="block text-sm font-semibold text-slate-700">
+            <label htmlFor="register-password" className="block text-sm font-semibold text-slate-700">
               Password
             </label>
             <input
-              id="login-password"
+              id="register-password"
               type="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
+              minLength={8}
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-100"
             />
+            <p className="text-xs text-slate-500">Use at least 8 characters.</p>
           </div>
           <button
             type="submit"
             disabled={isSubmitting}
             className="w-full rounded-lg bg-violet-600 px-4 py-3 text-sm font-semibold text-white hover:bg-violet-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-700 disabled:cursor-wait disabled:opacity-60"
           >
-            {isSubmitting ? "Signing in..." : "Sign in"}
+            {isSubmitting ? "Creating account..." : "Create employee account"}
           </button>
         </form>
 
         <p className="text-center text-sm text-slate-600">
-          New to Roomly? <Link to="/register" className="font-semibold text-violet-700 underline">Create an employee account</Link>
+          Already registered? <Link to="/login" className="font-semibold text-violet-700 underline">Sign in</Link>
         </p>
-
-        {import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_SERVICES !== "false" && (
-          <details className="rounded-lg bg-slate-50 p-3 text-xs text-slate-600">
-            <summary className="cursor-pointer font-semibold">Development demo accounts</summary>
-            <p className="mt-2">Employee: employee@roomly.local / Roomly123!</p>
-            <p>Admin: admin@roomly.local / Admin123!</p>
-          </details>
-        )}
+        <p className="text-xs text-slate-500">Admin accounts are provisioned by the administrator and cannot be created here.</p>
       </section>
     </main>
   );
 }
 
-export default Login;
+export default Register;
