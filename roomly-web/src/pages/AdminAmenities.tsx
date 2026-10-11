@@ -1,9 +1,10 @@
+import type { Amenity } from "../types/models.ts";
 import { useCallback, useEffect, useState } from "react";
 import { adminService } from "../services/adminService.ts";
 
 function AdminAmenities() {
-  const [amenities, setAmenities] = useState([]);
-  const [editingId, setEditingId] = useState(null);
+  const [amenities, setAmenities] = useState<Amenity[]>([]);
+  const [editingId, setEditingId] = useState<string | number | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,7 @@ function AdminAmenities() {
     setErrorMessage("");
   }
 
-  function editAmenity(amenity) {
+  function editAmenity(amenity: Amenity) {
     setEditingId(amenity.id);
     setName(amenity.name);
     setDescription(amenity.description || "");
@@ -42,7 +43,7 @@ function AdminAmenities() {
     setStatusMessage("");
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
     setStatusMessage("");
@@ -107,7 +108,7 @@ function AdminAmenities() {
             <label htmlFor="amenity-description" className="block text-sm font-semibold text-slate-700">Description</label>
             <textarea
               id="amenity-description"
-              rows="2"
+              rows={2}
               maxLength={300}
               value={description}
               onChange={(event) => setDescription(event.target.value)}

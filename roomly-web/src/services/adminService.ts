@@ -1,4 +1,4 @@
-import type { AmenityDetails, RoomDetails, UtilizationDateRange } from "../types/models.ts";
+import type { Amenity, AmenityDetails, Room, RoomDetails, UtilizationDateRange, UtilizationRow } from "../types/models.ts";
 import { apiRequest } from "../api/apiClient.ts";
 import {
   getMockAdminAmenities,
@@ -35,7 +35,7 @@ function requireList<T>(value: unknown, label: string): T[] {
 
 async function getRoomsFromApi() {
   const path = requireSetting("VITE_ADMIN_ROOMS_PATH", apiSettings.roomsPath);
-  return requireList(await apiRequest(path), "admin rooms");
+  return requireList<Room>(await apiRequest(path), "admin rooms");
 }
 
 async function saveRoomWithApi(roomDetails: RoomDetails) {
@@ -66,7 +66,7 @@ async function getAmenitiesFromApi() {
     "VITE_ADMIN_AMENITIES_PATH",
     apiSettings.amenitiesPath,
   );
-  return requireList(await apiRequest(path), "amenities");
+  return requireList<Amenity>(await apiRequest(path), "amenities");
 }
 
 async function saveAmenityWithApi(amenityDetails: AmenityDetails) {
@@ -107,7 +107,7 @@ async function getUtilizationReportFromApi(dateRange: UtilizationDateRange) {
     startDate: dateRange.startDate,
     endDate: dateRange.endDate,
   });
-  return requireList(
+  return requireList<UtilizationRow>(
     await apiRequest(`${path}?${query.toString()}`),
     "utilization report",
   );

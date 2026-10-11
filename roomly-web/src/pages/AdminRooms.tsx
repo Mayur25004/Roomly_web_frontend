@@ -1,15 +1,16 @@
+import type { Amenity, Room } from "../types/models.ts";
 import { useCallback, useEffect, useState } from "react";
 import { adminService } from "../services/adminService.ts";
 
 function AdminRooms() {
-  const [rooms, setRooms] = useState([]);
-  const [amenities, setAmenities] = useState([]);
-  const [editingId, setEditingId] = useState(null);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [amenities, setAmenities] = useState<Amenity[]>([]);
+  const [editingId, setEditingId] = useState<string | number | null>(null);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [capacity, setCapacity] = useState("1");
   const [active, setActive] = useState(true);
-  const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,7 +47,7 @@ function AdminRooms() {
     setErrorMessage("");
   }
 
-  function editRoom(room) {
+  function editRoom(room: Room) {
     setEditingId(room.id);
     setName(room.name);
     setLocation(room.location);
@@ -57,7 +58,7 @@ function AdminRooms() {
     setErrorMessage("");
   }
 
-  function toggleAmenity(amenityName) {
+  function toggleAmenity(amenityName: string) {
     setSelectedAmenities((current) =>
       current.includes(amenityName)
         ? current.filter((item) => item !== amenityName)
@@ -65,7 +66,7 @@ function AdminRooms() {
     );
   }
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
     setStatusMessage("");

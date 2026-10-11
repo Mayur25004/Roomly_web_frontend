@@ -1,3 +1,4 @@
+import type { UtilizationRow } from "../types/models.ts";
 import { useCallback, useEffect, useState } from "react";
 import { adminService } from "../services/adminService.ts";
 import { formatDate, getLocalDateString } from "../utils/dateTime.ts";
@@ -11,12 +12,12 @@ function AdminUtilization() {
   const today = getLocalDateString();
   const [startDate, setStartDate] = useState(getMonthStartDate());
   const [endDate, setEndDate] = useState(today);
-  const [reportRows, setReportRows] = useState([]);
+  const [reportRows, setReportRows] = useState<UtilizationRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  const loadReport = useCallback(async (rangeStart, rangeEnd) => {
+  const loadReport = useCallback(async (rangeStart: string, rangeEnd: string) => {
     setIsLoading(true);
     setErrorMessage("");
     setHasLoaded(false);
@@ -40,7 +41,7 @@ function AdminUtilization() {
     loadReport(getMonthStartDate(), getLocalDateString());
   }, [loadReport]);
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!startDate || !endDate || startDate > endDate) {
       setHasLoaded(false);

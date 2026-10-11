@@ -1,3 +1,4 @@
+import type { CurrentUser } from "../types/models.ts";
 import { Link } from "react-router-dom";
 
 const adminLinks = [
@@ -18,7 +19,7 @@ const adminLinks = [
   },
 ];
 
-function AdminDashboard({ currentUser }) {
+function AdminDashboard({ currentUser }: { currentUser: CurrentUser }) {
   return (
     <section className="space-y-7">
       <header>
