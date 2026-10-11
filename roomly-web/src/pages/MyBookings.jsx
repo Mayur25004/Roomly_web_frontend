@@ -83,7 +83,13 @@ function MyBookings() {
   const visibleBookings = bookings
     .filter((booking) => {
       const startsInFuture = new Date(booking.startTime) >= now;
-      return selectedView === "upcoming" ? startsInFuture : !startsInFuture;
+      const isCancelled = booking.status === "cancelled";
+
+      if (selectedView === "upcoming") {
+        return startsInFuture && !isCancelled;
+      }
+
+      return !startsInFuture || isCancelled;
     })
     .sort((first, second) =>
       selectedView === "upcoming"
