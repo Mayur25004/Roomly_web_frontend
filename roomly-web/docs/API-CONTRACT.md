@@ -33,3 +33,10 @@ These are frontend concepts derived from the assessment and ER diagram, not an A
 ## Frontend configuration
 
 Set `VITE_API_BASE_URL` in a local `.env` file. Use `.env.example` as a placeholder only; do not commit a real `.env` file or credentials.
+
+
+## My Bookings page draft shape
+
+The frontend page expects a booking list with `id`, `roomName`, `location`, `title`, `attendeeCount`, `startTime`, `endTime`, and `status`. Cancellation needs the agreed path template (with `{bookingId}`), HTTP method, and successful response behavior. These are proposed frontend needs; confirm the real response and cancellation contract with the backend developer before integration.
+
+For local development, `VITE_USE_MOCK_SERVICES` selects the isolated mock service. The mock is enabled by default in Vite development and is never selected in a production build. Setting it to `false` selects the API service. Populate `VITE_MY_BOOKINGS_PATH`, `VITE_CANCEL_BOOKING_PATH_TEMPLATE`, and `VITE_CANCEL_BOOKING_METHOD` only after the corresponding contract has been agreed.

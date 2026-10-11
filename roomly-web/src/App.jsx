@@ -2,6 +2,7 @@ import {BrowserRouter,Route,Routes,Navigate} from "react-router-dom"
 
 import MainLayout from './layouts/MainLayout.jsx'
 import Rooms from './pages/Rooms.jsx' 
+import MyBookings from './pages/MyBookings.jsx'
 function Login() {
   return<h1>Roomly Login</h1>
 }
@@ -15,6 +16,7 @@ function App() {
       <Route path ="/login" element = {<Login/>}/>
       <Route element = {<MainLayout/>}>
         <Route path ="/rooms" element = {<Rooms/>}/>
+        <Route path ="/my-bookings" element = {<MyBookings/>}/>
       </Route>
     </Routes>
   </BrowserRouter>
