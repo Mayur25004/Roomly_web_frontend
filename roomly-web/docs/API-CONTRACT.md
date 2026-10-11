@@ -54,3 +54,10 @@ The booking form currently sends a `POST` request to the path configured by `VIT
 - `startTime` and `endTime`: ISO 8601 UTC timestamps.
 
 The backend must remain the final authority for duration, capacity, availability, and booking conflicts. Confirm the endpoint path, field names, response body, and validation/conflict error format with the backend developer before configuring this API path.
+
+
+## Room listing draft
+
+**Status: Proposed — confirm with the Go backend developer before real API integration.**
+
+The Browse Rooms page can load a list from the path configured by `VITE_ROOMS_PATH`. Each proposed room includes `id`, `name`, `location`, `capacity`, `status`, and an `amenities` list. Until pagination and filter query parameters are agreed, the frontend applies the room filters and six-item pagination to the returned list. Confirm whether the backend will return a complete list or server-paginated results before enabling this API service in production.
