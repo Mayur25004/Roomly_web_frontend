@@ -95,3 +95,8 @@ The API service currently sends requests with credentials enabled and keeps only
 - `VITE_ADMIN_UTILIZATION_PATH`: `GET` with `startDate` and `endDate` (`YYYY-MM-DD`) query values; the proposed response is a list containing `roomId`, `roomName`, `bookedHours`, and `bookingCount`.
 
 The proposed room shape includes `id`, `name`, `location`, `capacity`, boolean `active`, and amenity names. Confirm endpoint methods, update behavior, amenity association payload, report calculations, and response envelopes before filling these environment variables.
+
+
+## Error response draft
+
+The shared API client displays a backend string field named `message` or `error` when present, includes `X-Request-ID` in the message when supplied, and otherwise gives clear guidance for common HTTP statuses (400/422 validation, 401 session expiry, 403 permission denied, and 409 conflict). Confirm the actual backend error envelope and status-code meanings before integration.

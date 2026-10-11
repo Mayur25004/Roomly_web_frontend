@@ -1,3 +1,5 @@
+import { getApiErrorMessage } from "../utils/apiErrors.js";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim();
 
 export class ApiError extends Error {
@@ -54,7 +56,11 @@ export async function apiRequest(path, options = {}) {
 
   let response;
   try {
-    response = await fetch(getRequestUrl(path), { ...options, headers });
+    response = await fetch(getRequestUrl(path), {
+      credentials: "include",
+      ...options,
+      headers,
+    });
   } catch (error) {
     if (error.name === "AbortError") {
       throw error;
@@ -71,9 +77,8 @@ export async function apiRequest(path, options = {}) {
   }
 
   if (!response.ok) {
-    const requestIdMessage = requestId ? ` Request ID: ${requestId}.` : "";
     throw new ApiError(
-      `The API request failed with status ${response.status}.${requestIdMessage}`,
+      getApiErrorMessage(response.status, responseBody, requestId),
       { status: response.status, requestId, responseBody },
     );
   }

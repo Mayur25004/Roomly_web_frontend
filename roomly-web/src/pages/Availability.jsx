@@ -6,9 +6,7 @@ import {
   combineLocalDateAndTime,
   getLocalDateString,
 } from "../utils/dateTime.js";
-
-const MIN_DURATION_MINUTES = 15;
-const MAX_DURATION_MINUTES = 4 * 60;
+import { validateTimeWindow } from "../utils/bookingValidation.js";
 
 function Availability() {
   const [meetingDate, setMeetingDate] = useState(getLocalDateString());
@@ -47,28 +45,13 @@ function Availability() {
   }
 
   function validateSearch() {
-    if (!meetingDate || !startTime || !endTime) {
-      return "Choose a date, start time, and end time.";
-    }
-
-    const start = combineLocalDateAndTime(meetingDate, startTime);
-    const end = combineLocalDateAndTime(meetingDate, endTime);
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      return "Choose a valid date and time.";
-    }
-    if (start <= new Date()) {
-      return "The search must start in the future.";
-    }
-    if (end <= start) {
-      return "The end time must be after the start time on the selected date.";
-    }
-
-    const durationMinutes = (end - start) / (60 * 1000);
-    if (durationMinutes < MIN_DURATION_MINUTES) {
-      return "The requested time must be at least 15 minutes.";
-    }
-    if (durationMinutes > MAX_DURATION_MINUTES) {
-      return "The requested time cannot be longer than 4 hours.";
+    const timeError = validateTimeWindow({
+      date: meetingDate,
+      startTime,
+      endTime,
+    });
+    if (timeError) {
+      return timeError.replace("booking", "search").replace("Bookings", "Search");
     }
 
     if (minimumCapacity && (!Number.isInteger(Number(minimumCapacity)) || Number(minimumCapacity) < 1)) {

@@ -4,9 +4,7 @@ import { ArrowLeft, MapPin, Users } from "lucide-react";
 import { mockRooms } from "../data/mockRooms.js";
 import { myBookingsService } from "../services/myBookingsService.js";
 import { combineLocalDateAndTime } from "../utils/dateTime.js";
-
-const MIN_DURATION_MINUTES = 15;
-const MAX_DURATION_MINUTES = 4 * 60;
+import { validateBookingInput } from "../utils/bookingValidation.js";
 
 function BookingForm() {
   const { roomId } = useParams();
@@ -20,53 +18,6 @@ function BookingForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function validateForm() {
-    if (!title.trim()) {
-      return "Enter a title for this meeting.";
-    }
-
-    if (title.trim().length > 100) {
-      return "The meeting title must be 100 characters or fewer.";
-    }
-
-    const attendeeNumber = Number(attendeeCount);
-    if (!Number.isInteger(attendeeNumber) || attendeeNumber < 1) {
-      return "Enter at least one attendee.";
-    }
-
-    if (attendeeNumber > room.capacity) {
-      return `This room can hold up to ${room.capacity} people.`;
-    }
-
-    if (!meetingDate || !startTime || !endTime) {
-      return "Choose a date, start time, and end time.";
-    }
-
-    const start = combineLocalDateAndTime(meetingDate, startTime);
-    const end = combineLocalDateAndTime(meetingDate, endTime);
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-      return "Choose a valid date and time.";
-    }
-
-    if (start <= new Date()) {
-      return "The booking must start in the future.";
-    }
-
-    if (end <= start) {
-      return "The end time must be after the start time on the selected date.";
-    }
-
-    const durationMinutes = (end - start) / (60 * 1000);
-    if (durationMinutes < MIN_DURATION_MINUTES) {
-      return "Bookings must be at least 15 minutes long.";
-    }
-
-    if (durationMinutes > MAX_DURATION_MINUTES) {
-      return "Bookings cannot be longer than 4 hours.";
-    }
-
-    return "";
-  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -77,7 +28,10 @@ function BookingForm() {
       return;
     }
 
-    const validationMessage = validateForm();
+    const validationMessage = validateBookingInput(
+      { title, attendeeCount, meetingDate, startTime, endTime },
+      room.capacity,
+    );
     if (validationMessage) {
       setErrorMessage(validationMessage);
       return;
