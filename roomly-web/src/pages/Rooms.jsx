@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { DoorOpen } from "lucide-react";
-import { MapPin } from "lucide-react";
-import { Users } from "lucide-react";
 import RoomCard from "../components/RoomCard.jsx";
+
 
 const rooms = [
   {
@@ -60,65 +58,16 @@ const filteredRooms = rooms.filter((room) =>
       </div>
       
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {filteredRooms.map((room) => (  
-            
-          <article
-            key={room.id}
-            className="min-w-0 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-          >
-            <div className="mb-6 flex items-center justify-between">
-              <div className="flex size-12 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
-                <DoorOpen size={24} />
-              </div>
-
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                  room.status === "Available"
-                    ? "bg-emerald-100 text-emerald-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {room.status}
-              </span>
-            </div>
-
-            <h2 className="text-lg font-semibold text-slate-900">
-              {room.name}
-            </h2>
-
-            <div className="mt-4 space-y-3 text-sm text-slate-500">
-              <p className="flex items-center gap-2">
-                <MapPin size={17} />
-                {room.location}
-              </p>
-
-              <p className="flex items-center gap-2">
-                <Users size={17} />
-                Capacity: {room.capacity} people
-              </p>
-            </div>
-
-            <button
-              type="button"
-              disabled={room.status !== "Available"}
-              className="mt-6 w-full rounded-lg bg-violet-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
-            >
-              {room.status === "Available" ? "Book Room" : "Unavailable"}
-            </button>
-          </article>
+        {filteredRooms.map((room) => (
+          <RoomCard key={room.id} room={room} />
         ))}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
-            {filteredRooms.map((room) => (
-                <RoomCard key={room.id} room={room} />
-            ))}
-        </div>
-        {filteredRooms.length === 0 && (
-        <p className="text-sm text-slate-500">
-            No rooms found. Try another search.
-        </p>
-)}
       </div>
-      
+
+      {filteredRooms.length === 0 && (
+        <p className="text-sm text-slate-500">
+          No rooms found. Try another search.
+        </p>
+      )}
     </section>
   );
 }
