@@ -46,6 +46,21 @@ The tests cover booking rules and history, availability conflicts, mock account 
 - `src/utils/` contains booking validation, date formatting, availability rules, booking history, and utilization calculations.
 - `docs/API-CONTRACT.md` records the frontend’s proposed API shapes and the decisions still needing agreement.
 
+## Employee profile page
+
+The signed-in user can open **Profile** from the sidebar. The page shows the name, email, and role already held by the application session. The round avatar displays initials made from the user's name; when the name is unavailable, it uses the first letter of the email. It is an initials avatar, not a profile photo, because the current account model has no photo field.
+
+The booking summary loads the current user's bookings through `myBookingsService.getMyBookings()`. **Total bookings** counts every booking returned by that service, including cancelled and past bookings. **Upcoming bookings** uses the same `getBookingsForView()` rule as My Bookings: it excludes cancelled bookings and bookings whose end time has passed, while including a booking that is currently in progress.
+
+Important files:
+
+- `src/pages/Profile.jsx` is the page component. It receives `currentUser` as a prop, loads bookings when the page opens, and displays loading and error states. **Try again** repeats the request after a failure.
+- `src/utils/profileSummary.js` contains the count and avatar-initial calculations, separate from the visual page so they can be tested independently.
+- `src/utils/profileSummary.test.js` checks those calculations with fixed example data and a fixed date.
+- `src/App.jsx` registers the protected `/profile` route, `src/components/Sidebar.jsx` adds the navigation link, and `src/layouts/MainLayout.jsx` sets the browser tab title.
+
+React concepts used here: `useState` stores the booking results and loading/error messages; `useEffect` starts the load when the page mounts; `useCallback` keeps the retry function stable for the effect dependency. The page does not make its own `fetch()` call: it uses the same booking service as the rest of the app, so it can use mock data during development and the API service when the backend contract is configured.
+
 ## Mock services and API integration
 
 Vite development uses mock services by default. Set `VITE_USE_MOCK_SERVICES=false` in the local `.env` file to select the API services during development. Production builds use the API services; they do not use mock data.
