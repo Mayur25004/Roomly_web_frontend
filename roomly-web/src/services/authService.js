@@ -60,14 +60,14 @@ export function getCurrentUser() {
 }
 export async function login(email, password) {
     const user = useMockServices
-        ? await loginWithMock(email, password)
-        : await loginWithApi(email, password);
+        ? await loginWithMock(email.trim(), password)
+        : await loginWithApi(email.trim(), password);
     return saveUser(user);
 }
 export async function registerEmployee(name, email, password) {
     const user = useMockServices
-        ? await registerWithMock(name, email, password)
-        : await registerWithApi(name, email, password);
+        ? await registerWithMock(name.trim(), email.trim(), password)
+        : await registerWithApi(name.trim(), email.trim(), password);
     return saveUser(user);
 }
 export async function logout() {

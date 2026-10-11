@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { registerEmployee } from "../services/authService.js";
+import { validateEmployeeRegistration } from "../utils/authValidation.js";
 function Register({ currentUser, onRegister }) {
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -17,8 +18,9 @@ function Register({ currentUser, onRegister }) {
     async function handleSubmit(event) {
         event.preventDefault();
         setErrorMessage("");
-        if (password.length < 8) {
-            setErrorMessage("Use a password with at least 8 characters.");
+        const validationMessage = validateEmployeeRegistration({ name, email, password });
+        if (validationMessage) {
+            setErrorMessage(validationMessage);
             return;
         }
         setIsSubmitting(true);
