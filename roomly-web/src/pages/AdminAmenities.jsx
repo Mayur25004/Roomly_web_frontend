@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { adminService } from "../services/adminService.js";
+import { validateAmenityDetails } from "../utils/adminValidation.js";
 function AdminAmenities() {
     const [amenities, setAmenities] = useState([]);
     const [editingId, setEditingId] = useState(null);
@@ -42,6 +43,11 @@ function AdminAmenities() {
         event.preventDefault();
         setErrorMessage("");
         setStatusMessage("");
+        const validationMessage = validateAmenityDetails({ name });
+        if (validationMessage) {
+            setErrorMessage(validationMessage);
+            return;
+        }
         setIsSaving(true);
         try {
             await adminService.saveAmenity({ id: editingId, name, description });
@@ -70,7 +76,7 @@ function AdminAmenities() {
           {errorMessage}
         </p>)}
 
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <form onSubmit={handleSubmit} noValidate className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-slate-900">
             {editingId ? "Edit amenity" : "Add an amenity"}

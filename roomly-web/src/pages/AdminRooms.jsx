@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { adminService } from "../services/adminService.js";
+import { validateRoomDetails } from "../utils/adminValidation.js";
 function AdminRooms() {
     const [rooms, setRooms] = useState([]);
     const [amenities, setAmenities] = useState([]);
@@ -62,9 +63,9 @@ function AdminRooms() {
         event.preventDefault();
         setErrorMessage("");
         setStatusMessage("");
-        const capacityNumber = Number(capacity);
-        if (!Number.isInteger(capacityNumber) || capacityNumber < 1) {
-            setErrorMessage("Capacity must be a whole number greater than zero.");
+        const validationMessage = validateRoomDetails({ name, location, capacity });
+        if (validationMessage) {
+            setErrorMessage(validationMessage);
             return;
         }
         setIsSaving(true);
@@ -73,7 +74,7 @@ function AdminRooms() {
                 id: editingId,
                 name,
                 location,
-                capacity: capacityNumber,
+                capacity: Number(capacity),
                 active: editingId ? active : true,
                 amenities: selectedAmenities,
             });
