@@ -46,7 +46,7 @@ function Profile({ currentUser }) {
 
             <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
-                    <div aria-label={`${getUserInitials(currentUser)} profile avatar`} className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-violet-100 text-3xl font-bold text-violet-700 ring-4 ring-violet-50">
+                    <div aria-label={`${getUserInitials(currentUser)} profile avatar`} className="flex p-3 h-24 w-24 shrink-0 items-center justify-center rounded-full bg-violet-100 text-3xl font-bold text-violet-700 ring-4 ring-violet-50">
                         {getUserInitials(currentUser)}
                     </div>
                     <div className="min-w-0">
@@ -56,7 +56,7 @@ function Profile({ currentUser }) {
                             <span className="break-all">{currentUser.email}</span>
                         </p>
                         <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-violet-50 px-3 py-1 text-sm font-medium text-violet-700">
-                            <UserRound size={15} aria-hidden="true" />
+                            <UserRound size={18} aria-hidden="true" />
                             {roleName}
                         </p>
                     </div>
