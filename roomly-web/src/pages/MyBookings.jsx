@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { CalendarDays, Clock3, MapPin, Users } from "lucide-react";
 import { ApiError } from "../api/apiClient.js";
 import { myBookingsService } from "../services/myBookingsService.js";
-import { getBookingsForView, } from "../utils/bookingHistory.js";
+import { getBookingStatusLabel, getBookingsForView, } from "../utils/bookingHistory.js";
 import { formatDate, formatTime } from "../utils/dateTime.js";
 function getErrorMessage(error) {
     if (error instanceof ApiError || error instanceof Error) {
@@ -105,12 +105,10 @@ function MyBookings() {
         </p>) : (<div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
           {visibleBookings.map((booking) => {
                 const isCancelled = booking.status === "cancelled";
-                const statusLabel = isCancelled
-                    ? "Cancelled"
-                    : selectedView === "past"
-                        ? "Completed"
-                        : "Confirmed";
-                const canCancel = selectedView === "upcoming" && !isCancelled;
+                const statusLabel = getBookingStatusLabel(booking);
+                const canCancel = selectedView === "upcoming" &&
+                    !isCancelled &&
+                    new Date(booking.startTime) > new Date();
                 return (<article key={booking.id} className="min-w-0 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>

@@ -1,12 +1,12 @@
 export function getBookingsForView(bookings, view, now = new Date()) {
     return bookings
         .filter((booking) => {
-        const startsInFuture = new Date(booking.startTime) >= now;
         const isCancelled = booking.status === "cancelled";
+        const hasEnded = new Date(booking.endTime) <= now;
         if (view === "upcoming") {
-            return startsInFuture && !isCancelled;
+            return !hasEnded && !isCancelled;
         }
-        return !startsInFuture || isCancelled;
+        return hasEnded || isCancelled;
     })
         .sort((first, second) => {
         const firstStart = new Date(first.startTime).getTime();
@@ -15,4 +15,17 @@ export function getBookingsForView(bookings, view, now = new Date()) {
             ? firstStart - secondStart
             : secondStart - firstStart;
     });
+}
+
+export function getBookingStatusLabel(booking, now = new Date()) {
+    if (booking.status === "cancelled") {
+        return "Cancelled";
+    }
+    if (new Date(booking.endTime) <= now) {
+        return "Completed";
+    }
+    if (new Date(booking.startTime) <= now) {
+        return "In progress";
+    }
+    return "Confirmed";
 }
