@@ -1,16 +1,18 @@
 import type { Room } from "../types/models.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, MapPin, Users } from "lucide-react";
-import { mockRooms } from "../data/mockRooms.ts";
 import { myBookingsService } from "../services/myBookingsService.ts";
+import { roomsService } from "../services/roomsService.ts";
 import { combineLocalDateAndTime } from "../utils/dateTime.ts";
 import { validateBookingInput } from "../utils/bookingValidation.ts";
 
 function BookingForm() {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const room: Room | undefined = mockRooms.find((item) => String(item.id) === roomId);
+  const [room, setRoom] = useState<Room | null>(null);
+  const [isLoadingRoom, setIsLoadingRoom] = useState(true);
+  const [roomLoadError, setRoomLoadError] = useState("");
   const [title, setTitle] = useState("");
   const [attendeeCount, setAttendeeCount] = useState("1");
   const [meetingDate, setMeetingDate] = useState("");
@@ -19,6 +21,43 @@ function BookingForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadRoom() {
+      setIsLoadingRoom(true);
+      setRoomLoadError("");
+
+      try {
+        const rooms = await roomsService.getRooms();
+        const matchingRoom = rooms.find(
+          (item) => String(item.id) === String(roomId),
+        );
+
+        if (isMounted) {
+          setRoom(matchingRoom ?? null);
+          if (!matchingRoom) {
+            setRoomLoadError("That room could not be found.");
+          }
+        }
+      } catch (error) {
+        if (isMounted) {
+          setRoomLoadError(
+            error instanceof Error ? error.message : "Could not load this room.",
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingRoom(false);
+        }
+      }
+    }
+
+    loadRoom();
+    return () => {
+      isMounted = false;
+    };
+  }, [roomId]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -55,12 +94,16 @@ function BookingForm() {
     }
   }
 
+  if (isLoadingRoom) {
+    return <p role="status" className="text-sm text-slate-500">Loading room...</p>;
+  }
+
   if (!room) {
     return (
       <section className="space-y-5">
         <h1 className="text-3xl font-bold text-slate-900">Room not found</h1>
         <p className="text-sm text-slate-600">
-          Choose a room from the browse page to start a booking.
+          {roomLoadError || "Choose a room from the browse page to start a booking."}
         </p>
         <Link to="/rooms" className="font-semibold text-violet-700 underline">
           Browse rooms
