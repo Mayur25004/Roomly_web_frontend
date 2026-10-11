@@ -84,3 +84,14 @@ Confirm the actual route, query names, response envelope, and whether cancelled 
 - Each successful auth response is proposed to contain `{ user: { id, name, email, role } }`, where `role` is `employee` or `admin`. Admin creation remains backend-controlled.
 
 The API service currently sends requests with credentials enabled and keeps only the returned user summary in `sessionStorage`; it does not store a password or bearer token. Confirm cookie/session behavior, CORS credentials, endpoint paths, response shape, expired-session status (the frontend currently treats HTTP 401 as an expired session), and registration validation before using the real service. Development mock accounts live in `src/data/mockUsers.js` and must be removed before final submission.
+
+
+## Admin API draft
+
+**Status: Proposed — confirm with the Go backend developer before real API integration.**
+
+- `VITE_ADMIN_ROOMS_PATH`: list rooms with `GET`, create with `POST`; `VITE_ADMIN_ROOM_PATH_TEMPLATE` uses `{roomId}` for updates with `PATCH`.
+- `VITE_ADMIN_AMENITIES_PATH`: list amenities with `GET`, create with `POST`; `VITE_ADMIN_AMENITY_PATH_TEMPLATE` uses `{amenityId}` for updates with `PATCH`.
+- `VITE_ADMIN_UTILIZATION_PATH`: `GET` with `startDate` and `endDate` (`YYYY-MM-DD`) query values; the proposed response is a list containing `roomId`, `roomName`, `bookedHours`, and `bookingCount`.
+
+The proposed room shape includes `id`, `name`, `location`, `capacity`, boolean `active`, and amenity names. Confirm endpoint methods, update behavior, amenity association payload, report calculations, and response envelopes before filling these environment variables.

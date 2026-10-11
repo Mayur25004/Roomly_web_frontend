@@ -7,6 +7,9 @@ const pageTitles = {
   "/availability": "Find an Available Room",
   "/my-bookings": "My Bookings",
   "/admin": "Admin Dashboard",
+  "/admin/rooms": "Manage Rooms",
+  "/admin/amenities": "Manage Amenities",
+  "/admin/reports": "Room Utilization",
 };
 
 function MainLayout({ currentUser, onLogout }) {

@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import {
   CalendarDays,
   Clock3,
+  DoorOpen,
   LayoutGrid,
   ShieldCheck,
   LogOut,
@@ -16,7 +17,12 @@ function Sidebar({ currentUser, onLogout }) {
   ];
 
   if (currentUser.role === "admin") {
-    links.push({ name: "Admin Dashboard", path: "/admin", icon: ShieldCheck });
+    links.push(
+      { name: "Admin Dashboard", path: "/admin", icon: ShieldCheck },
+      { name: "Manage Rooms", path: "/admin/rooms", icon: LayoutGrid },
+      { name: "Amenities", path: "/admin/amenities", icon: DoorOpen },
+      { name: "Utilization", path: "/admin/reports", icon: Clock3 },
+    );
   }
 
   return (

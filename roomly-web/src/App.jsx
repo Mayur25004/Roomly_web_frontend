@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import MainLayout from "./layouts/MainLayout.jsx";
+import AdminAmenities from "./pages/AdminAmenities.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import AdminRooms from "./pages/AdminRooms.jsx";
+import AdminUtilization from "./pages/AdminUtilization.jsx";
 import Availability from "./pages/Availability.jsx";
 import BookingForm from "./pages/BookingForm.jsx";
 import Login from "./pages/Login.jsx";
@@ -90,6 +93,9 @@ function App() {
             <Route path="/my-bookings" element={<MyBookings />} />
             <Route element={<ProtectedRoute user={currentUser} requiredRole="admin" />}>
               <Route path="/admin" element={<AdminDashboard currentUser={currentUser} />} />
+              <Route path="/admin/rooms" element={<AdminRooms />} />
+              <Route path="/admin/amenities" element={<AdminAmenities />} />
+              <Route path="/admin/reports" element={<AdminUtilization />} />
             </Route>
           </Route>
         </Route>
