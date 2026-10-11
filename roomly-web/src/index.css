@@ -47,11 +47,3 @@ ul,
 ol {
   list-style: none;
 }
-
-
-@media (max-width: 640px) {
-  .main-content {
-    margin-left: 76px;
-    padding: 20px 14px;
-  }
-}

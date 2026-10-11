@@ -9,7 +9,7 @@ function Sidebar({ currentUser, onLogout }) {
     if (currentUser.role === "admin") {
         links.push({ name: "Admin Dashboard", path: "/admin", icon: ShieldCheck }, { name: "Manage Rooms", path: "/admin/rooms", icon: LayoutGrid }, { name: "Amenities", path: "/admin/amenities", icon: DoorOpen }, { name: "Utilization", path: "/admin/reports", icon: Clock3 });
     }
-    return (<aside className="fixed inset-y-0 left-0 z-10 flex w-[250px] flex-col bg-[#17152b] px-[18px] pt-7 pb-5 text-[#f8fafc] max-sm:w-[76px] max-sm:px-2.5">
+    return (<aside className="sticky top-0 flex h-screen w-[250px] shrink-0 flex-col bg-[#17152b] px-[18px] pt-7 pb-5 text-[#f8fafc] max-sm:w-[76px] max-sm:px-2.5">
       <div className="flex items-center gap-2.75 px-2.5 text-2xl font-[750] text-[#c6bbff] max-sm:justify-center max-sm:px-0">
         <CalendarDays size={26}/>
         <span className="max-sm:hidden">Roomly</span>

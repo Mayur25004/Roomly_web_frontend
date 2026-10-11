@@ -23,10 +23,10 @@ function MainLayout({ currentUser, onLogout, }) {
                 : pageTitles[location.pathname] || "Rooms";
         document.title = `Roomly - ${pageName}`;
     }, [location.pathname]);
-    return (<div className="min-h-screen bg-slate-50">
+    return (<div className="flex min-h-screen bg-slate-50">
       {currentUser && <Sidebar currentUser={currentUser} onLogout={onLogout}/>}
 
-      <main className="ml-[250px] min-h-screen min-w-0 p-8 max-sm:ml-[76px] max-sm:p-4">
+      <main className="min-h-screen min-w-0 flex-1 p-8 max-sm:p-4">
         <Outlet />
       </main>
     </div>);
