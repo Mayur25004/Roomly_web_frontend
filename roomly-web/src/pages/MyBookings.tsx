@@ -4,6 +4,10 @@ import { useLocation } from "react-router-dom";
 import { CalendarDays, Clock3, MapPin, Users } from "lucide-react";
 import { ApiError } from "../api/apiClient.ts";
 import { myBookingsService } from "../services/myBookingsService.ts";
+import {
+  getBookingsForView,
+  type BookingHistoryView,
+} from "../utils/bookingHistory.ts";
 import { formatDate, formatTime } from "../utils/dateTime.ts";
 
 function getErrorMessage(error: unknown) {
@@ -17,7 +21,7 @@ function getErrorMessage(error: unknown) {
 function MyBookings() {
   const location = useLocation();
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [selectedView, setSelectedView] = useState("upcoming");
+  const [selectedView, setSelectedView] = useState<BookingHistoryView>("upcoming");
   const [isLoading, setIsLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [loadErrorMessage, setLoadErrorMessage] = useState("");
@@ -68,23 +72,7 @@ function MyBookings() {
     }
   }
 
-  const now = new Date();
-  const visibleBookings = bookings
-    .filter((booking) => {
-      const startsInFuture = new Date(booking.startTime) >= now;
-      const isCancelled = booking.status === "cancelled";
-
-      if (selectedView === "upcoming") {
-        return startsInFuture && !isCancelled;
-      }
-
-      return !startsInFuture || isCancelled;
-    })
-    .sort((first, second) =>
-      selectedView === "upcoming"
-        ? new Date(first.startTime).getTime() - new Date(second.startTime).getTime()
-        : new Date(second.startTime).getTime() - new Date(first.startTime).getTime(),
-    );
+  const visibleBookings = getBookingsForView(bookings, selectedView);
 
   return (
     <section className="space-y-8">
