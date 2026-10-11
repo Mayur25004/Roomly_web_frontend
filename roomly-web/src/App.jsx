@@ -6,13 +6,13 @@ import AdminAmenities from "./pages/AdminAmenities.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import AdminRooms from "./pages/AdminRooms.jsx";
 import AdminUtilization from "./pages/AdminUtilization.jsx";
-import Availability from "./pages/Availability.jsx";
-import BookingForm from "./pages/BookingForm.jsx";
+import Availability from "./pages/Availability.tsx";
+import BookingForm from "./pages/BookingForm.tsx";
 import Login from "./pages/Login.jsx";
-import MyBookings from "./pages/MyBookings.jsx";
+import MyBookings from "./pages/MyBookings.tsx";
 import Register from "./pages/Register.jsx";
-import Rooms from "./pages/Rooms.jsx";
-import RoomSchedule from "./pages/RoomSchedule.jsx";
+import Rooms from "./pages/Rooms.tsx";
+import RoomSchedule from "./pages/RoomSchedule.tsx";
 import {
   clearSavedUser,
   logout,

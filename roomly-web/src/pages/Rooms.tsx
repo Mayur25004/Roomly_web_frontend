@@ -1,12 +1,13 @@
+import type { Room } from "../types/models.ts";
 import { useCallback, useEffect, useState } from "react";
 import { Search } from "lucide-react";
-import RoomCard from "../components/RoomCard.jsx";
+import RoomCard from "../components/RoomCard.tsx";
 import { roomsService } from "../services/roomsService.ts";
 
 const PAGE_SIZE = 6;
 
 function Rooms() {
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [search, setSearch] = useState("");
   const [selectedAmenity, setSelectedAmenity] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -71,7 +72,7 @@ function Rooms() {
     currentPage * PAGE_SIZE,
   );
 
-  function resetPage(updateFilter) {
+  function resetPage(updateFilter: () => void) {
     updateFilter();
     setCurrentPage(1);
   }

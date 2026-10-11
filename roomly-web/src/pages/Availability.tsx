@@ -1,5 +1,6 @@
+import type { Room } from "../types/models.ts";
 import { useEffect, useState } from "react";
-import RoomCard from "../components/RoomCard.jsx";
+import RoomCard from "../components/RoomCard.tsx";
 import { roomsService } from "../services/roomsService.ts";
 import { roomPlanningService } from "../services/roomPlanningService.ts";
 import {
@@ -13,10 +14,10 @@ function Availability() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [minimumCapacity, setMinimumCapacity] = useState("");
-  const [availableAmenities, setAvailableAmenities] = useState([]);
-  const [requiredAmenities, setRequiredAmenities] = useState([]);
+  const [availableAmenities, setAvailableAmenities] = useState<string[]>([]);
+  const [requiredAmenities, setRequiredAmenities] = useState<string[]>([]);
   const [amenityLoadMessage, setAmenityLoadMessage] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Room[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,7 +36,7 @@ function Availability() {
     loadAmenities();
   }, []);
 
-  function toggleAmenity(amenity) {
+  function toggleAmenity(amenity: string) {
     setRequiredAmenities((currentAmenities) => {
       if (currentAmenities.includes(amenity)) {
         return currentAmenities.filter((item) => item !== amenity);
@@ -61,7 +62,7 @@ function Availability() {
     return "";
   }
 
-  async function handleSearch(event) {
+  async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
     setHasSearched(false);

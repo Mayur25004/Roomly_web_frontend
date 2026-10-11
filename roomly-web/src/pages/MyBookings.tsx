@@ -1,3 +1,4 @@
+import type { Booking } from "../types/models.ts";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CalendarDays, Clock3, MapPin, Users } from "lucide-react";
@@ -5,7 +6,7 @@ import { ApiError } from "../api/apiClient.ts";
 import { myBookingsService } from "../services/myBookingsService.ts";
 import { formatDate, formatTime } from "../utils/dateTime.ts";
 
-function getErrorMessage(error) {
+function getErrorMessage(error: unknown) {
   if (error instanceof ApiError || error instanceof Error) {
     return error.message;
   }
@@ -15,10 +16,10 @@ function getErrorMessage(error) {
 
 function MyBookings() {
   const location = useLocation();
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [selectedView, setSelectedView] = useState("upcoming");
   const [isLoading, setIsLoading] = useState(true);
-  const [cancellingId, setCancellingId] = useState(null);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [loadErrorMessage, setLoadErrorMessage] = useState("");
   const [actionErrorMessage, setActionErrorMessage] = useState("");
   const [statusMessage, setStatusMessage] = useState(
@@ -45,7 +46,7 @@ function MyBookings() {
     loadBookings();
   }, [loadBookings]);
 
-  async function handleCancel(bookingId) {
+  async function handleCancel(bookingId: string) {
     setCancellingId(bookingId);
     setActionErrorMessage("");
     setStatusMessage("");
@@ -81,8 +82,8 @@ function MyBookings() {
     })
     .sort((first, second) =>
       selectedView === "upcoming"
-        ? new Date(first.startTime) - new Date(second.startTime)
-        : new Date(second.startTime) - new Date(first.startTime),
+        ? new Date(first.startTime).getTime() - new Date(second.startTime).getTime()
+        : new Date(second.startTime).getTime() - new Date(first.startTime).getTime(),
     );
 
   return (

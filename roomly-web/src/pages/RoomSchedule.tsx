@@ -1,3 +1,4 @@
+import type { Booking, Room } from "../types/models.ts";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, CalendarDays, Clock3, Users } from "lucide-react";
@@ -7,9 +8,9 @@ import { formatDate, formatTime, getLocalDateString } from "../utils/dateTime.ts
 
 function RoomSchedule() {
   const { roomId } = useParams();
-  const [room, setRoom] = useState(null);
+  const [room, setRoom] = useState<Room | null>(null);
   const [selectedDate, setSelectedDate] = useState(getLocalDateString());
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoadingRoom, setIsLoadingRoom] = useState(true);
   const [isLoadingSchedule, setIsLoadingSchedule] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,7 +42,7 @@ function RoomSchedule() {
     loadRoom();
   }, [roomId]);
 
-  async function handleLoadSchedule(event) {
+  async function handleLoadSchedule(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!selectedDate) {
       setErrorMessage("Choose a date to view the room schedule.");
@@ -53,7 +54,7 @@ function RoomSchedule() {
     setIsLoadingSchedule(true);
     try {
       const schedule = await roomPlanningService.getRoomSchedule(
-        roomId,
+        roomId ?? "",
         selectedDate,
       );
       setBookings(schedule);

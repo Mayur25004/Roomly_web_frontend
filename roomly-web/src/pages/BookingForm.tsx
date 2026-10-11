@@ -1,3 +1,4 @@
+import type { Room } from "../types/models.ts";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, MapPin, Users } from "lucide-react";
@@ -9,7 +10,7 @@ import { validateBookingInput } from "../utils/bookingValidation.ts";
 function BookingForm() {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const room = mockRooms.find((item) => String(item.id) === roomId);
+  const room: Room | undefined = mockRooms.find((item) => String(item.id) === roomId);
   const [title, setTitle] = useState("");
   const [attendeeCount, setAttendeeCount] = useState("1");
   const [meetingDate, setMeetingDate] = useState("");
@@ -19,7 +20,7 @@ function BookingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
 
