@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { CalendarDays, Clock3, MapPin, Users } from "lucide-react";
 import { ApiError } from "../api/apiClient.js";
 import { myBookingsService } from "../services/myBookingsService.js";
@@ -25,13 +26,18 @@ function getErrorMessage(error) {
 }
 
 function MyBookings() {
+  const location = useLocation();
   const [bookings, setBookings] = useState([]);
   const [selectedView, setSelectedView] = useState("upcoming");
   const [isLoading, setIsLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState(null);
   const [loadErrorMessage, setLoadErrorMessage] = useState("");
   const [actionErrorMessage, setActionErrorMessage] = useState("");
-  const [statusMessage, setStatusMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState(
+    location.state?.bookingCreated
+      ? "Your booking was created successfully."
+      : "",
+  );
 
   const loadBookings = useCallback(async () => {
     setIsLoading(true);

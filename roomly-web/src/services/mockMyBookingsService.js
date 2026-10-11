@@ -1,3 +1,5 @@
+import { mockRooms } from "../data/mockRooms.js";
+
 function dateFromToday(daysFromToday, hour, minute) {
   const date = new Date();
   date.setDate(date.getDate() + daysFromToday);
@@ -10,6 +12,7 @@ let mockBookings = [
   {
     id: "booking-101",
     roomName: "Conference Room A",
+    roomId: 1,
     location: "Floor 1",
     title: "Product planning",
     attendeeCount: 7,
@@ -20,6 +23,7 @@ let mockBookings = [
   {
     id: "booking-102",
     roomName: "Meeting Room B",
+    roomId: 2,
     location: "Floor 2",
     title: "Sprint review",
     attendeeCount: 5,
@@ -30,6 +34,7 @@ let mockBookings = [
   {
     id: "booking-103",
     roomName: "Board Room",
+    roomId: 3,
     location: "Floor 3",
     title: "Quarterly review",
     attendeeCount: 10,
@@ -40,6 +45,7 @@ let mockBookings = [
   {
     id: "booking-104",
     roomName: "Conference Room A",
+    roomId: 1,
     location: "Floor 1",
     title: "Project kickoff",
     attendeeCount: 6,
@@ -70,4 +76,41 @@ export async function cancelMockBooking(bookingId) {
 
   booking.status = "cancelled";
   return { ...booking };
+}
+
+export async function createMockBooking(bookingDetails) {
+  const room = mockRooms.find(
+    (item) => String(item.id) === String(bookingDetails.roomId),
+  );
+
+  if (!room) {
+    throw new Error("That room could not be found.");
+  }
+
+  const hasConflict = mockBookings.some((booking) => {
+    const overlaps =
+      new Date(bookingDetails.startTime) < new Date(booking.endTime) &&
+      new Date(bookingDetails.endTime) > new Date(booking.startTime);
+
+    return booking.roomName === room.name && booking.status !== "cancelled" && overlaps;
+  });
+
+  if (hasConflict) {
+    throw new Error("This room already has a booking during that time. Choose another time.");
+  }
+
+  const newBooking = {
+    id: `booking-${Date.now()}`,
+    roomName: room.name,
+    roomId: bookingDetails.roomId,
+    location: room.location,
+    title: bookingDetails.title,
+    attendeeCount: bookingDetails.attendeeCount,
+    startTime: bookingDetails.startTime,
+    endTime: bookingDetails.endTime,
+    status: "active",
+  };
+
+  mockBookings = [...mockBookings, newBooking];
+  return { ...newBooking };
 }

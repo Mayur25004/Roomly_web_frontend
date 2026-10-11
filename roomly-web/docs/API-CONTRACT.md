@@ -40,3 +40,17 @@ Set `VITE_API_BASE_URL` in a local `.env` file. Use `.env.example` as a placehol
 The frontend page expects a booking list with `id`, `roomName`, `location`, `title`, `attendeeCount`, `startTime`, `endTime`, and `status`. Cancellation needs the agreed path template (with `{bookingId}`), HTTP method, and successful response behavior. These are proposed frontend needs; confirm the real response and cancellation contract with the backend developer before integration.
 
 For local development, `VITE_USE_MOCK_SERVICES` selects the isolated mock service. The mock is enabled by default in Vite development and is never selected in a production build. Setting it to `false` selects the API service. Populate `VITE_MY_BOOKINGS_PATH`, `VITE_CANCEL_BOOKING_PATH_TEMPLATE`, and `VITE_CANCEL_BOOKING_METHOD` only after the corresponding contract has been agreed.
+
+
+## Booking creation draft shape
+
+**Status: Proposed — confirm with the Go backend developer before real API integration.**
+
+The booking form currently sends a `POST` request to the path configured by `VITE_CREATE_BOOKING_PATH`. Its proposed JSON body is:
+
+- `roomId`: selected room identifier.
+- `title`: meeting title.
+- `attendeeCount`: number of attendees.
+- `startTime` and `endTime`: ISO 8601 UTC timestamps.
+
+The backend must remain the final authority for duration, capacity, availability, and booking conflicts. Confirm the endpoint path, field names, response body, and validation/conflict error format with the backend developer before configuring this API path.

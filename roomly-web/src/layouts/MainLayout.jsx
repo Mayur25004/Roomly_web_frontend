@@ -11,7 +11,10 @@ function MainLayout() {
   const location = useLocation();
 
   useEffect(() => {
-    const pageName = pageTitles[location.pathname] || "Rooms";
+    const isBookingPage = location.pathname.startsWith("/bookings/new/");
+    const pageName = isBookingPage
+      ? "Create Booking"
+      : pageTitles[location.pathname] || "Rooms";
     document.title = `Roomly - ${pageName}`;
   }, [location.pathname]);
 

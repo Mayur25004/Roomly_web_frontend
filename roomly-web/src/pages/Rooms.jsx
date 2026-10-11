@@ -1,40 +1,16 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 import RoomCard from "../components/RoomCard.jsx";
-
-
-const rooms = [
-  {
-    id: 1,
-    name: "Conference Room A",
-    location: "Floor 1",
-    capacity: 8,
-    status: "Available",
-  },
-  {
-    id: 2,
-    name: "Meeting Room B",
-    location: "Floor 2",
-    capacity: 6,
-    status: "Available",
-  },
-  {
-    id: 3,
-    name: "Board Room",
-    location: "Floor 3",
-    capacity: 12,
-    status: "Booked",
-  },
-];
-
+import { mockRooms } from "../data/mockRooms.js";
 
 function Rooms() {
-const [search, setSearch] = useState("");
-const filteredRooms = rooms.filter((room) =>
-  `${room.name} ${room.location}`
-    .toLowerCase()
-    .includes(search.toLowerCase())
-);
+  const [search, setSearch] = useState("");
+  const filteredRooms = mockRooms.filter((room) =>
+    `${room.name} ${room.location}`
+      .toLowerCase()
+      .includes(search.toLowerCase()),
+  );
+
   return (
     <section className="space-y-8">
       <header>
@@ -47,26 +23,30 @@ const filteredRooms = rooms.filter((room) =>
       </header>
 
       <div className="flex max-w-lg items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-        <Search size={19} className="text-slate-400" />
+        <Search size={19} className="text-slate-400" aria-hidden="true" />
+        <label className="sr-only" htmlFor="room-search">
+          Search by room name or floor
+        </label>
         <input
-            type="text"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search meeting rooms..."
-            className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
-            />
-      </div>
-      
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {filteredRooms.map((room) => (
-          <RoomCard key={room.id} room={room} />
-        ))}
+          id="room-search"
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Search meeting rooms..."
+          className="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
+        />
       </div>
 
-      {filteredRooms.length === 0 && (
+      {filteredRooms.length === 0 ? (
         <p className="text-sm text-slate-500">
           No rooms found. Try another search.
         </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {filteredRooms.map((room) => (
+            <RoomCard key={room.id} room={room} />
+          ))}
+        </div>
       )}
     </section>
   );
