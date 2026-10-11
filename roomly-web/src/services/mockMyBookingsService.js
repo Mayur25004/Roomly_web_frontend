@@ -80,7 +80,8 @@ export async function createMockBooking(bookingDetails) {
     const hasConflict = mockBookings.some((booking) => {
         const overlaps = new Date(bookingDetails.startTime) < new Date(booking.endTime) &&
             new Date(bookingDetails.endTime) > new Date(booking.startTime);
-        return booking.roomName === room.name && booking.status !== "cancelled" && overlaps;
+        const sameRoom = String(booking.roomId) === String(room.id);
+        return sameRoom && booking.status !== "cancelled" && overlaps;
     });
     if (hasConflict) {
         throw new Error("This room already has a booking during that time. Choose another time.");
