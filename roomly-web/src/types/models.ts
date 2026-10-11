@@ -60,3 +60,36 @@ export interface UtilizationRow {
   bookedHours: number;
   bookingCount: number;
 }
+
+export interface Amenity {
+  id: string | number;
+  name: string;
+  description: string;
+}
+
+export interface MockUser extends CurrentUser {
+  password: string;
+}
+
+export interface BookingRequest {
+  roomId: string | number;
+  title: string;
+  attendeeCount: number;
+  startTime: string;
+  endTime: string;
+}
+
+export interface RoomDetails {
+  id?: string | number | null;
+  name: string;
+  location: string;
+  capacity: number;
+  active: boolean;
+  amenities: string[];
+}
+
+export interface AmenityDetails {
+  id?: string | number | null;
+  name: string;
+  description: string;
+}

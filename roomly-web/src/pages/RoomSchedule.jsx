@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, CalendarDays, Clock3, Users } from "lucide-react";
-import { roomsService } from "../services/roomsService.js";
-import { roomPlanningService } from "../services/roomPlanningService.js";
+import { roomsService } from "../services/roomsService.ts";
+import { roomPlanningService } from "../services/roomPlanningService.ts";
 import { formatDate, formatTime, getLocalDateString } from "../utils/dateTime.ts";
 
 function RoomSchedule() {

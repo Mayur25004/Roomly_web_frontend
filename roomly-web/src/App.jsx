@@ -17,7 +17,7 @@ import {
   clearSavedUser,
   logout,
   restoreSession,
-} from "./services/authService.js";
+} from "./services/authService.ts";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);

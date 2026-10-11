@@ -1,3 +1,4 @@
+import type { AmenityDetails, RoomDetails, UtilizationDateRange } from "../types/models.ts";
 import { apiRequest } from "../api/apiClient.ts";
 import {
   getMockAdminAmenities,
@@ -5,7 +6,7 @@ import {
   getMockUtilizationReport,
   saveMockAmenity,
   saveMockRoom,
-} from "./mockAdminService.js";
+} from "./mockAdminService.ts";
 
 const useMockServices =
   import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_SERVICES !== "false";
@@ -18,18 +19,18 @@ const apiSettings = {
   utilizationPath: import.meta.env.VITE_ADMIN_UTILIZATION_PATH?.trim(),
 };
 
-function requireSetting(name, value) {
+function requireSetting(name: string, value: string | undefined): string {
   if (!value) {
     throw new Error(`${name} must be set after the admin API contract is agreed.`);
   }
   return value;
 }
 
-function requireList(value, label) {
+function requireList<T>(value: unknown, label: string): T[] {
   if (!Array.isArray(value)) {
     throw new Error(`The ${label} API response must be a list.`);
   }
-  return value;
+  return value as T[];
 }
 
 async function getRoomsFromApi() {
@@ -37,7 +38,7 @@ async function getRoomsFromApi() {
   return requireList(await apiRequest(path), "admin rooms");
 }
 
-async function saveRoomWithApi(roomDetails) {
+async function saveRoomWithApi(roomDetails: RoomDetails) {
   const roomsPath = requireSetting("VITE_ADMIN_ROOMS_PATH", apiSettings.roomsPath);
   if (!roomDetails.id) {
     return apiRequest(roomsPath, {
@@ -68,7 +69,7 @@ async function getAmenitiesFromApi() {
   return requireList(await apiRequest(path), "amenities");
 }
 
-async function saveAmenityWithApi(amenityDetails) {
+async function saveAmenityWithApi(amenityDetails: AmenityDetails) {
   const amenitiesPath = requireSetting(
     "VITE_ADMIN_AMENITIES_PATH",
     apiSettings.amenitiesPath,
@@ -97,7 +98,7 @@ async function saveAmenityWithApi(amenityDetails) {
   });
 }
 
-async function getUtilizationReportFromApi(dateRange) {
+async function getUtilizationReportFromApi(dateRange: UtilizationDateRange) {
   const path = requireSetting(
     "VITE_ADMIN_UTILIZATION_PATH",
     apiSettings.utilizationPath,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RoomCard from "../components/RoomCard.jsx";
-import { roomsService } from "../services/roomsService.js";
-import { roomPlanningService } from "../services/roomPlanningService.js";
+import { roomsService } from "../services/roomsService.ts";
+import { roomPlanningService } from "../services/roomPlanningService.ts";
 import {
   combineLocalDateAndTime,
   getLocalDateString,

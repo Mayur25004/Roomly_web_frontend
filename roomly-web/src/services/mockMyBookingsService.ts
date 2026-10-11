@@ -1,6 +1,7 @@
-import { mockRooms } from "../data/mockRooms.js";
+import type { Booking, BookingRequest } from "../types/models.ts";
+import { mockRooms } from "../data/mockRooms.ts";
 
-function dateFromToday(daysFromToday, hour, minute) {
+function dateFromToday(daysFromToday: number, hour: number, minute: number) {
   const date = new Date();
   date.setDate(date.getDate() + daysFromToday);
   date.setHours(hour, minute, 0, 0);
@@ -8,7 +9,7 @@ function dateFromToday(daysFromToday, hour, minute) {
 }
 
 // These mock records all belong to the signed-in employee represented by this demo.
-let mockBookings = [
+let mockBookings: Booking[] = [
   {
     id: "booking-101",
     roomName: "Conference Room A",
@@ -55,11 +56,11 @@ let mockBookings = [
   },
 ];
 
-export async function getMockMyBookings() {
+export async function getMockMyBookings(): Promise<Booking[]> {
   return mockBookings.map((booking) => ({ ...booking }));
 }
 
-export async function cancelMockBooking(bookingId) {
+export async function cancelMockBooking(bookingId: string): Promise<Booking> {
   const booking = mockBookings.find((item) => item.id === bookingId);
 
   if (!booking) {
@@ -78,7 +79,7 @@ export async function cancelMockBooking(bookingId) {
   return { ...booking };
 }
 
-export async function createMockBooking(bookingDetails) {
+export async function createMockBooking(bookingDetails: BookingRequest): Promise<Booking> {
   const room = mockRooms.find(
     (item) => String(item.id) === String(bookingDetails.roomId),
   );

@@ -1,9 +1,10 @@
+import type { Booking, BookingRequest } from "../types/models.ts";
 import { apiRequest } from "../api/apiClient.ts";
 import {
   cancelMockBooking,
   createMockBooking,
   getMockMyBookings,
-} from "./mockMyBookingsService.js";
+} from "./mockMyBookingsService.ts";
 
 const useMockServices =
   import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_SERVICES !== "false";
@@ -15,7 +16,9 @@ const apiSettings = {
   createBookingPath: import.meta.env.VITE_CREATE_BOOKING_PATH?.trim(),
 };
 
-function getRequiredApiSetting(name, setting) {
+type ApiSettingName = "myBookingsPath" | "cancelPathTemplate" | "cancelMethod" | "createBookingPath";
+
+function getRequiredApiSetting(name: string, setting: ApiSettingName): string {
   const value = apiSettings[setting];
 
   if (!value) {
@@ -25,7 +28,7 @@ function getRequiredApiSetting(name, setting) {
   return value;
 }
 
-async function getMyBookingsFromApi() {
+async function getMyBookingsFromApi(): Promise<Booking[]> {
   const path = getRequiredApiSetting("VITE_MY_BOOKINGS_PATH", "myBookingsPath");
   const bookings = await apiRequest(path);
 
@@ -33,10 +36,10 @@ async function getMyBookingsFromApi() {
     throw new Error("The My Bookings API response must be a list of bookings.");
   }
 
-  return bookings;
+  return bookings as Booking[];
 }
 
-async function cancelMyBookingFromApi(bookingId) {
+async function cancelMyBookingFromApi(bookingId: string): Promise<unknown> {
   const pathTemplate = getRequiredApiSetting("VITE_CANCEL_BOOKING_PATH_TEMPLATE", "cancelPathTemplate");
   const method = getRequiredApiSetting("VITE_CANCEL_BOOKING_METHOD", "cancelMethod");
 
@@ -48,7 +51,7 @@ async function cancelMyBookingFromApi(bookingId) {
   return apiRequest(path, { method });
 }
 
-async function createBookingWithApi(bookingDetails) {
+async function createBookingWithApi(bookingDetails: BookingRequest): Promise<unknown> {
   const path = getRequiredApiSetting(
     "VITE_CREATE_BOOKING_PATH",
     "createBookingPath",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { registerEmployee } from "../services/authService.js";
+import { registerEmployee } from "../services/authService.ts";
 
 function Register({ currentUser, onRegister }) {
   const navigate = useNavigate();

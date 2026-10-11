@@ -1,5 +1,7 @@
 // These fake accounts are development fixtures and must not ship in the final build.
-export const mockUsers = [
+import type { MockUser } from "../types/models.ts";
+
+export const mockUsers: MockUser[] = [
   {
     id: "employee-demo",
     name: "Demo Employee",

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import RoomCard from "../components/RoomCard.jsx";
-import { roomsService } from "../services/roomsService.js";
+import { roomsService } from "../services/roomsService.ts";
 
 const PAGE_SIZE = 6;
 

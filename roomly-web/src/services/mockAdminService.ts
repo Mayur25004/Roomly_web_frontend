@@ -1,17 +1,18 @@
-import { mockAmenities } from "../data/mockAmenities.js";
-import { mockRooms } from "../data/mockRooms.js";
-import { getMockMyBookings } from "./mockMyBookingsService.js";
+import type { Amenity, AmenityDetails, Room, RoomDetails, UtilizationDateRange, UtilizationRow } from "../types/models.ts";
+import { mockAmenities } from "../data/mockAmenities.ts";
+import { mockRooms } from "../data/mockRooms.ts";
+import { getMockMyBookings } from "./mockMyBookingsService.ts";
 import { calculateUtilizationRows } from "../utils/utilization.ts";
 
-function copyRoom(room) {
+function copyRoom(room: Room): Room {
   return { ...room, amenities: [...room.amenities] };
 }
 
-export async function getMockAdminRooms() {
+export async function getMockAdminRooms(): Promise<Room[]> {
   return mockRooms.map(copyRoom);
 }
 
-export async function saveMockRoom(roomDetails) {
+export async function saveMockRoom(roomDetails: RoomDetails): Promise<Room> {
   const existingRoom = mockRooms.find(
     (room) => String(room.id) === String(roomDetails.id),
   );
@@ -39,11 +40,11 @@ export async function saveMockRoom(roomDetails) {
   return copyRoom(newRoom);
 }
 
-export async function getMockAdminAmenities() {
+export async function getMockAdminAmenities(): Promise<Amenity[]> {
   return mockAmenities.map((amenity) => ({ ...amenity }));
 }
 
-export async function saveMockAmenity(amenityDetails) {
+export async function saveMockAmenity(amenityDetails: AmenityDetails): Promise<Amenity> {
   const existingAmenity = mockAmenities.find(
     (amenity) => String(amenity.id) === String(amenityDetails.id),
   );
@@ -62,7 +63,7 @@ export async function saveMockAmenity(amenityDetails) {
     existingAmenity.name = normalizedName;
     if (previousName !== normalizedName) {
       mockRooms.forEach((room) => {
-        room.amenities = room.amenities.map((roomAmenity) =>
+        room.amenities = room.amenities.map((roomAmenity: string) =>
           roomAmenity === previousName ? normalizedName : roomAmenity,
         );
       });
@@ -80,7 +81,7 @@ export async function saveMockAmenity(amenityDetails) {
   return { ...newAmenity };
 }
 
-export async function getMockUtilizationReport(dateRange) {
+export async function getMockUtilizationReport(dateRange: UtilizationDateRange): Promise<UtilizationRow[]> {
   const bookings = await getMockMyBookings();
   return calculateUtilizationRows(mockRooms, bookings, dateRange);
 }

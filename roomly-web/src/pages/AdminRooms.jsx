@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { adminService } from "../services/adminService.js";
+import { adminService } from "../services/adminService.ts";
 
 function AdminRooms() {
   const [rooms, setRooms] = useState([]);

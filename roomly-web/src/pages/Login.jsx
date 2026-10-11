@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { login } from "../services/authService.js";
+import { login } from "../services/authService.ts";
 
 function Login({ currentUser, onLogin }) {
   const navigate = useNavigate();

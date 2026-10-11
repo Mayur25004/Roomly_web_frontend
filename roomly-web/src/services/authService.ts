@@ -1,9 +1,10 @@
+import type { CurrentUser, UserRole } from "../types/models.ts";
 import { apiRequest } from "../api/apiClient.ts";
 import {
   loginWithMock,
   logoutMock,
   registerWithMock,
-} from "./mockAuthService.js";
+} from "./mockAuthService.ts";
 
 const SESSION_USER_KEY = "roomly-session-user";
 const useMockServices =
@@ -16,22 +17,30 @@ const apiSettings = {
   currentUserPath: import.meta.env.VITE_CURRENT_USER_PATH?.trim(),
 };
 
-function requireApiPath(name, value) {
+function requireApiPath(name: string, value: string | undefined): string {
   if (!value) {
     throw new Error(`${name} must be set after the authentication API contract is agreed.`);
   }
   return value;
 }
 
-function validateUserResponse(response) {
-  const user = response?.user;
-  if (!user || !user.id || !user.email || !["employee", "admin"].includes(user.role)) {
+function validateUserResponse(response: unknown): CurrentUser {
+  if (!response || typeof response !== "object" || !("user" in response)) {
+    throw new Error("The authentication API must return a user object.");
+  }
+  const user = response.user as Partial<CurrentUser> | null;
+  if (
+    !user ||
+    typeof user.id !== "string" ||
+    typeof user.email !== "string" ||
+    (user.role !== "employee" && user.role !== "admin")
+  ) {
     throw new Error("The authentication API must return a user with id, email, and role.");
   }
-  return user;
+  return user as CurrentUser;
 }
 
-async function loginWithApi(email, password) {
+async function loginWithApi(email: string, password: string) {
   const path = requireApiPath("VITE_LOGIN_PATH", apiSettings.loginPath);
   const response = await apiRequest(path, {
     method: "POST",
@@ -41,7 +50,7 @@ async function loginWithApi(email, password) {
   return validateUserResponse(response);
 }
 
-async function registerWithApi(name, email, password) {
+async function registerWithApi(name: string, email: string, password: string) {
   const path = requireApiPath("VITE_REGISTER_PATH", apiSettings.registerPath);
   const response = await apiRequest(path, {
     method: "POST",
@@ -65,29 +74,29 @@ async function restoreCurrentUserFromApi() {
   return validateUserResponse(response);
 }
 
-function saveUser(user) {
+function saveUser(user: CurrentUser): CurrentUser {
   sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(user));
   return user;
 }
 
-export function getCurrentUser() {
+export function getCurrentUser(): CurrentUser | null {
   try {
     const storedUser = sessionStorage.getItem(SESSION_USER_KEY);
-    return storedUser ? JSON.parse(storedUser) : null;
+    return storedUser ? (JSON.parse(storedUser) as CurrentUser) : null;
   } catch {
     sessionStorage.removeItem(SESSION_USER_KEY);
     return null;
   }
 }
 
-export async function login(email, password) {
+export async function login(email: string, password: string): Promise<CurrentUser> {
   const user = useMockServices
     ? await loginWithMock(email, password)
     : await loginWithApi(email, password);
   return saveUser(user);
 }
 
-export async function registerEmployee(name, email, password) {
+export async function registerEmployee(name: string, email: string, password: string): Promise<CurrentUser> {
   const user = useMockServices
     ? await registerWithMock(name, email, password)
     : await registerWithApi(name, email, password);
@@ -106,7 +115,7 @@ export async function logout() {
   }
 }
 
-export async function restoreSession() {
+export async function restoreSession(): Promise<CurrentUser | null> {
   if (useMockServices) {
     return getCurrentUser();
   }

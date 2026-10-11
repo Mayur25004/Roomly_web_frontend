@@ -1,4 +1,6 @@
-export const mockRooms = [
+import type { Room } from "../types/models.ts";
+
+export const mockRooms: Room[] = [
   {
     id: 1,
     name: "Conference Room A",

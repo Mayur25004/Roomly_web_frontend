@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, MapPin, Users } from "lucide-react";
-import { mockRooms } from "../data/mockRooms.js";
-import { myBookingsService } from "../services/myBookingsService.js";
+import { mockRooms } from "../data/mockRooms.ts";
+import { myBookingsService } from "../services/myBookingsService.ts";
 import { combineLocalDateAndTime } from "../utils/dateTime.ts";
 import { validateBookingInput } from "../utils/bookingValidation.ts";
 

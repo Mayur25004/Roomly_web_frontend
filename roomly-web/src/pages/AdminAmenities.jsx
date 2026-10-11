@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { adminService } from "../services/adminService.js";
+import { adminService } from "../services/adminService.ts";
 
 function AdminAmenities() {
   const [amenities, setAmenities] = useState([]);

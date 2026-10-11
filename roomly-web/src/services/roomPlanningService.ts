@@ -1,22 +1,23 @@
+import type { AvailabilityCriteria, Booking, Room } from "../types/models.ts";
 import { apiRequest } from "../api/apiClient.ts";
 import {
   getMockRoomSchedule,
   searchMockAvailability,
-} from "./mockRoomPlanningService.js";
+} from "./mockRoomPlanningService.ts";
 
 const useMockServices =
   import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_SERVICES !== "false";
 const availabilityPath = import.meta.env.VITE_ROOM_AVAILABILITY_PATH?.trim();
 const schedulePathTemplate = import.meta.env.VITE_ROOM_SCHEDULE_PATH_TEMPLATE?.trim();
 
-function getRequiredPath(name, path) {
+function getRequiredPath(name: string, path: string | undefined): string {
   if (!path) {
     throw new Error(`${name} must be set after the room planning API contract is agreed.`);
   }
   return path;
 }
 
-async function searchAvailabilityFromApi(criteria) {
+async function searchAvailabilityFromApi(criteria: AvailabilityCriteria): Promise<Room[]> {
   const path = getRequiredPath(
     "VITE_ROOM_AVAILABILITY_PATH",
     availabilityPath,
@@ -37,10 +38,10 @@ async function searchAvailabilityFromApi(criteria) {
   if (!Array.isArray(rooms)) {
     throw new Error("The availability API response must be a list of rooms.");
   }
-  return rooms;
+  return rooms as Room[];
 }
 
-async function getRoomScheduleFromApi(roomId, date) {
+async function getRoomScheduleFromApi(roomId: string | number, date: string): Promise<Booking[]> {
   const template = getRequiredPath(
     "VITE_ROOM_SCHEDULE_PATH_TEMPLATE",
     schedulePathTemplate,
@@ -56,7 +57,7 @@ async function getRoomScheduleFromApi(roomId, date) {
   if (!Array.isArray(bookings)) {
     throw new Error("The room schedule API response must be a list of bookings.");
   }
-  return bookings;
+  return bookings as Booking[];
 }
 
 export const roomPlanningService = useMockServices

@@ -1,4 +1,6 @@
-export const mockAmenities = [
+import type { Amenity } from "../types/models.ts";
+
+export const mockAmenities: Amenity[] = [
   {
     id: 1,
     name: "Display",

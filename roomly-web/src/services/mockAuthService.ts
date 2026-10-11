@@ -1,13 +1,14 @@
-import { mockUsers } from "../data/mockUsers.js";
+import type { CurrentUser, MockUser } from "../types/models.ts";
+import { mockUsers } from "../data/mockUsers.ts";
 
-let registeredUsers = [...mockUsers];
+let registeredUsers: MockUser[] = [...mockUsers];
 
-function toSafeUser(user) {
+function toSafeUser(user: MockUser): CurrentUser {
   const { password, ...safeUser } = user;
   return safeUser;
 }
 
-export async function loginWithMock(email, password) {
+export async function loginWithMock(email: string, password: string): Promise<CurrentUser> {
   const user = registeredUsers.find(
     (item) => item.email.toLowerCase() === email.trim().toLowerCase() &&
       item.password === password,
@@ -20,7 +21,7 @@ export async function loginWithMock(email, password) {
   return toSafeUser(user);
 }
 
-export async function registerWithMock(name, email, password) {
+export async function registerWithMock(name: string, email: string, password: string): Promise<CurrentUser> {
   const normalizedEmail = email.trim().toLowerCase();
   const alreadyRegistered = registeredUsers.some(
     (user) => user.email.toLowerCase() === normalizedEmail,
@@ -35,7 +36,7 @@ export async function registerWithMock(name, email, password) {
     name: name.trim(),
     email: normalizedEmail,
     password,
-    role: "employee",
+    role: "employee" as const,
   };
   registeredUsers = [...registeredUsers, newUser];
   return toSafeUser(newUser);
