@@ -235,7 +235,7 @@ function BookingForm() {
         </div>
 
         <p className="text-xs text-slate-500">
-          Choose one meeting date and the start and end times for that day. Bookings must be between 15 minutes and 4 hours. Times use your local timezone and are sent to the API in UTC.
+          Bookings must be between 15 minutes to 4 hours.
         </p>
 
         <button
